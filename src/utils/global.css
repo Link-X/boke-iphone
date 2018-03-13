@@ -1,0 +1,114 @@
+
+* {
+    margin: 0;
+    padding: 0;
+    user-select: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
+}
+body::-webkit-scrollbar {
+    display: none;
+}
+*::-webkit-scrollbar {
+    display: none;
+}
+body {
+    -ms-overflow-style: none;
+}
+input:-webkit-autofill {-webkit-box-shadow: 0 0 0px 1000px #1C85C8 inset;}
+html,
+body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    background: none;
+    overflow: hidden;
+}
+
+body {
+    font-family: "PingFang SC", "SF Pro Text", -apple-system, BlinkMacSystemFont, "Helvetica", "Roboto", "Segoe UI", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+    font-size: .13rem;
+    background: #f7f7f7;
+    scroll-behavior: smooth;
+    overflow: auto;
+
+}
+ol, ul {
+  list-style: none;
+}
+
+section .Label:last-child::after {
+    content: none;
+}
+
+input,button {
+    -webkit-appearance: none;
+    border: none;
+    outline:none;
+}
+
+.clearfix:after {
+    visibility: hidden;
+    display: block;
+    font-size: 0;
+    content: '';
+    clear: both;
+    height: 0;
+}
+
+.clearfix {
+    display: inline-block;
+}
+
+.hide {
+    display: none !important;
+}
+
+.show {
+    display: block !important;
+}
+
+.transformRight {
+    transform: translateX(0);
+}
+
+.transformLeft {
+    transform: translateX(-100vw);
+}
+
+a:link,
+a:visited,
+a:hover,
+a:active {
+    text-decoration: none;
+}
+
+.anchorBL {
+    display: none !important;
+}
+
+::-webkit-scrollbar {
+    width: 0;
+}
+
+.home-li_click {
+  background-color: #f1f1f1 !important;
+}
+.centers {
+  position: absolute;
+  width: .8rem;
+  height: .5rem;
+  top: 11%;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.van-toast--top {
+    top: 150px;
+}

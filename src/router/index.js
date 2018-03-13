@@ -1,15 +1,22 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import HelloWorld from '@/components/HelloWorld'
-
+const mainPage = () => import('@/views/mainPage')
+const NotFoundComponent = () => import('@/views/NotFoundComponent')
+const message = () => import('@/views/message')
 Vue.use(Router)
 
 export default new Router({
   routes: [
     {
       path: '/',
-      name: 'HelloWorld',
-      component: HelloWorld
+      component: mainPage,
+      children: [
+        { path: '', name: 'message', component: message },
+        { path: '/message', name: 'message', component: message }
+      ]
+    },
+    {
+      path: '*', component: NotFoundComponent
     }
   ]
 })
