@@ -1,10 +1,9 @@
 <template>
   <div>
-    <van-nav-bar
-      :title="headerTitle"
-      v-if="navVar"
-      @click-left="onClickLeft"
-    />
+    <van-nav-bar :title="headerTitle">
+      <van-icon v-if="!navVar" class="layout-return" name="arrow-left" slot="left" />
+      <van-icon v-if="navVar" class="layout-add" name="add-o" slot="right" />
+    </van-nav-bar>
     <router-view></router-view>
     <van-tabbar v-model="active" @change='tabChange'>
       <van-tabbar-item icon="chat">
@@ -62,5 +61,9 @@ export default {
   .van-nav-bar__title {
     color: #fff;
     background: linear-gradient(left,#2aacf9,#59d7f5)
+  }
+  .layout-add, .layout-return {
+    font-size: .22rem;
+    color: #fff!important;
   }
 </style>

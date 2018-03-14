@@ -2,6 +2,9 @@
   <div class="message">
     <Scroll :data='messList' class="message-scroll" @scroll='scroll' @scrollEnd='scrollEnd'>
       <ul class="message-ul">
+        <!-- <van-popup v-model="show" position="top" :overlay="false">
+          对话msg
+        </van-popup> -->
         <li class="message-li" v-for="item in messList" :key="item.id">
           <van-cell-swipe :right-width="65">
             <van-cell-group>
@@ -166,7 +169,6 @@ export default {
   background-color: red;
   color: #fff;
 }
-
 .van-cell_center {
   height: .5rem;
   padding: .1rem;
@@ -188,7 +190,7 @@ export default {
 }
 .message-ul {
   position: relative;
-  margin-bottom: 55px;
+  padding-bottom: 55px;
 }
 .cell-center_text {
   line-height: .25rem;
