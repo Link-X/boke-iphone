@@ -1,6 +1,6 @@
 <template>
   <div class="message">
-    <Scroll :data='messList' class="message-scroll" @scrollEnd='scrollEnd'>
+    <Scroll :data='messList' class="message-scroll" @scroll='scroll' @scrollEnd='scrollEnd'>
       <ul class="message-ul">
         <li class="message-li" v-for="item in messList" :key="item.id">
           <van-cell-swipe :right-width="65">
@@ -136,6 +136,9 @@ export default {
     },
     sendRoomChat () {
       this.$socket.emit('sendRoomChat', { roomId: 123, msg: `我是${this.user.userName}` })
+    },
+    scroll (pos) {
+      console.log(pos)
     },
     scrollEnd () {
       console.log(1)
