@@ -1,64 +1,117 @@
 <template>
   <div class="message">
-    <ul class="message-ul">
-      <li class="message-li">
-        <van-cell-swipe :right-width="65">
-          <van-cell-group>
-            <div class="van-cell_center" @click="enterRoom">
-              <div class="cell-center_img">
-                <img src="../../../static/toxiang.png" />
+    <Scroll :data='messList' class="message-scroll" @scrollEnd='scrollEnd'>
+      <ul class="message-ul">
+        <li class="message-li" v-for="item in messList" :key="item.id">
+          <van-cell-swipe :right-width="65">
+            <van-cell-group>
+              <div class="van-cell_center" @click="enterRoom">
+                <div class="cell-center_img">
+                  <img src="../../../static/toxiang.png" />
+                </div>
+                <div class="cell-center_text">
+                  <div class="center-text_title">{{item.userName}}</div>
+                  <div>{{item.msg}}</div>
+                </div>
+                <div class="cell-center_time">{{item.date}}</div>
               </div>
-              <div class="cell-center_text">
-                <div class="center-text_title">安妮海瑟薇</div>
-                <div>今晚我们去那吃饭</div>
-              </div>
-              <div class="cell-center_time">15:30</div>
-            </div>
-          </van-cell-group>
-          <span class="van-cell_right" slot="right">删除</span>
-        </van-cell-swipe>
-      </li>
-      <li class="message-li">
-        <van-cell-swipe :right-width="65">
-          <van-cell-group>
-            <div class="van-cell_center" @click="sendRoomChat">
-              <div class="cell-center_img">
-                <img src="../../../static/toxiang.png" />
-              </div>
-              <div class="cell-center_text">
-                <div class="center-text_title">安妮海瑟薇</div>
-                <div>今晚我们去那吃饭</div>
-              </div>
-              <div class="cell-center_time">15:30</div>
-            </div>
-          </van-cell-group>
-          <span class="van-cell_right" slot="right">删除</span>
-        </van-cell-swipe>
-      </li>
-      <li class="message-li">
-        <van-cell-swipe :right-width="65">
-          <van-cell-group>
-            <div class="van-cell_center">
-              <div class="cell-center_img">
-                <img src="../../../static/toxiang.png" />
-              </div>
-              <div class="cell-center_text">
-                <div class="center-text_title">安妮海瑟薇</div>
-                <div>今晚我们去那吃饭</div>
-              </div>
-              <div class="cell-center_time">15:30</div>
-            </div>
-          </van-cell-group>
-          <span class="van-cell_right" slot="right">删除</span>
-        </van-cell-swipe>
-      </li>
-    </ul>
+            </van-cell-group>
+            <span class="van-cell_right" slot="right">删除</span>
+          </van-cell-swipe>
+        </li>
+      </ul>
+    </Scroll>
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
+import Scroll from '@/components/scroll.vue'
 export default {
+  data () {
+    return {
+      messList: [
+        {
+          userName: '安妮海瑟薇',
+          msg: '今晚去哪吃',
+          date: '15:30',
+          id: '123'
+        },
+        {
+          userName: '安妮海瑟薇',
+          msg: '今晚去哪吃',
+          date: '15:30',
+          id: '1234'
+        },
+        {
+          userName: '安妮海瑟薇',
+          msg: '今晚去哪吃',
+          date: '15:30',
+          id: '1235'
+        },
+        {
+          userName: '安妮海瑟薇',
+          msg: '今晚去哪吃',
+          date: '15:30',
+          id: '1236'
+        },
+        {
+          userName: '安妮海瑟薇',
+          msg: '今晚去哪吃',
+          date: '15:30',
+          id: '1237'
+        },
+        {
+          userName: '安妮海瑟薇',
+          msg: '今晚去哪吃',
+          date: '15:30',
+          id: '1238'
+        },
+        {
+          userName: '安妮海瑟薇',
+          msg: '今晚去哪吃',
+          date: '15:30',
+          id: '1239'
+        },
+        {
+          userName: '安妮海瑟薇',
+          msg: '今晚去哪吃',
+          date: '15:30',
+          id: '1223'
+        },
+        {
+          userName: '安妮海瑟薇',
+          msg: '今晚去哪吃',
+          date: '15:30',
+          id: '12223'
+        },
+        {
+          userName: '安妮海瑟薇',
+          msg: '今晚去哪吃',
+          date: '15:30',
+          id: '12333'
+        },
+        {
+          userName: '安妮海瑟薇',
+          msg: '今晚去哪吃',
+          date: '15:30',
+          id: '133323'
+        },
+        {
+          userName: '安妮海瑟薇',
+          msg: '今晚去哪吃',
+          date: '15:30',
+          id: '121233'
+        },
+        {
+          userName: '安妮海瑟薇',
+          msg: '今晚去哪吃',
+          date: '15:30',
+          id: '1212343'
+        }
+      ]
+    }
+  },
   sockets: {
     connect: () => {
       console.log(this.$socket)
@@ -79,16 +132,22 @@ export default {
   },
   methods: {
     enterRoom (data) {
-      this.$socket.emit('join', {roomId: 123, userName: this.user.userName})
+      this.$socket.emit('join', { roomId: 123, userName: this.user.userName })
     },
     sendRoomChat () {
-      this.$socket.emit('sendRoomChat', {roomId: 123, msg: `我是${this.user.userName}`})
+      this.$socket.emit('sendRoomChat', { roomId: 123, msg: `我是${this.user.userName}` })
+    },
+    scrollEnd () {
+      console.log(1)
     }
   },
   computed: {
     ...mapGetters([
       'user'
     ])
+  },
+  components: {
+    Scroll
   }
 }
 </script>
@@ -117,16 +176,19 @@ export default {
     height: .5rem;
     border-radius: 50%;
     overflow: hidden;
-    margin-right: .1rem;
+    margin-right: .15rem;
     img {
       width: 100%;
       height: 100%;
     }
   }
 }
-
+.message-ul {
+  position: relative;
+  margin-bottom: 55px;
+}
 .cell-center_text {
-  line-height: .21rem;
+  line-height: .25rem;
   width: 65%;
   .center-text_title {
     font-weight: bold;
@@ -144,5 +206,16 @@ export default {
   position: absolute;
   right: .1rem;
   color: #756a6a;
+}
+
+.message-scroll {
+  position: fixed;
+  top: 46px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+  transition: all .2s;
+  overflow: hidden;
 }
 </style>

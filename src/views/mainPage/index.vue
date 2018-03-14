@@ -1,6 +1,6 @@
 <template>
   <div class="main-page">
-    <component :is="manView"></component>
+    <component class="main-page_com" :is="manView"></component>
   </div>
 </template>
 
@@ -25,7 +25,7 @@ export default {
 </script>
 
 <style lang='less' scoped>
-  .main-page {
+  .main-page, .main-page_com {
     height: 100%;
   }
 </style>
