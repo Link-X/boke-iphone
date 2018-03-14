@@ -110,5 +110,5 @@ a:active {
   align-items: center;
 }
 .van-toast--top {
-    top: 150px;
+    top: 150px!important;
 }

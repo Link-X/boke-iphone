@@ -9,20 +9,11 @@ import '@/utils/rem.js'
 import './utils/global.css'
 import vant from 'vant'
 import 'vant/lib/vant-css/index.css'
-
-// import 'vant/lib/vant-css/base.css'
-// import 'vant/lib/vant-css/button.css'
+import VueSocketio from 'vue-socket.io'
 Vue.config.productionTip = false
 
 Vue.use(vant)
-// .use(Col)
-// .use(Button)
-// .use(Field)
-// .use(Icon)
-// .use(NavBar)
-// .use(Tabbar)
-// .use(TabbarItem)
-// .use(CellSwipe)
+Vue.use(VueSocketio, 'http://127.0.0.1:5003')
 
 Vue.use(lazyLoad, {
   preLoad: 1.3,
@@ -35,5 +26,5 @@ new Vue({
   store,
   router,
   components: { App },
-  template: '<App/>'
+  template: '<App />'
 })

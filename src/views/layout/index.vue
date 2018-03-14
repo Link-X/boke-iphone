@@ -6,7 +6,7 @@
       @click-left="onClickLeft"
     />
     <router-view></router-view>
-    <van-tabbar v-model="active">
+    <van-tabbar v-model="active" @change='tabChange'>
       <van-tabbar-item icon="chat">
         <span>消息</span>
       </van-tabbar-item>
@@ -29,7 +29,8 @@ import resource from '@/utils/resource.json'
 export default {
   data () {
     return {
-      active: 0
+      active: 0,
+      navData: ['message', 'friend', 'blog', 'activity']
     }
   },
   methods: {
@@ -38,6 +39,11 @@ export default {
     },
     onClickRight () {
       console.log(22)
+    },
+    tabChange (val) {
+      this.$router.push({
+        path: `/${this.navData[val]}`
+      })
     }
   },
   computed: {

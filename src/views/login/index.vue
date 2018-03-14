@@ -177,7 +177,7 @@ export default {
       this.logIn(this.from).then(res => {
         if (res) {
           this.SET_ISLOTIN(true)
-          this.SET_USER(res.data[1])
+          this.SET_USER(res.data[0])
         }
       })
     },
