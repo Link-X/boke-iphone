@@ -1,6 +1,6 @@
 <template>
   <div>
-    <van-nav-bar :title="headerTitle">
+    <van-nav-bar :title="headerTitle" @click-left="pageClose">
       <van-icon v-if="!navVar" class="layout-return" name="arrow-left" slot="left" />
       <van-icon v-if="navVar" class="layout-add" name="add-o" slot="right" />
     </van-nav-bar>
@@ -43,6 +43,9 @@ export default {
       this.$router.push({
         path: `/${this.navData[val]}`
       })
+    },
+    pageClose () {
+      console.log(11)
     }
   },
   computed: {

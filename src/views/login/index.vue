@@ -107,26 +107,33 @@
     transform: rotate(360deg)
   }
 }
+
 .login-singIn {
   width: 60%;
   margin: 0 auto;
   margin-top: 2rem;
 }
 
-:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
-  color: #fff; opacity:1;
+:-moz-placeholder {
+  /* Mozilla Firefox 4 to 18 */
+  color: #fff;
+  opacity: 1;
 }
 
-::-moz-placeholder { /* Mozilla Firefox 19+ */
-  color: #fff;opacity:1;
+::-moz-placeholder {
+  /* Mozilla Firefox 19+ */
+  color: #fff;
+  opacity: 1;
 }
 
-input:-ms-input-placeholder{
-  color: #fff;opacity:1;
+input:-ms-input-placeholder {
+  color: #fff;
+  opacity: 1;
 }
 
-input::-webkit-input-placeholder{
-  color: #fff;opacity:1;
+input::-webkit-input-placeholder {
+  color: #fff;
+  opacity: 1;
 }
 </style>
 
@@ -140,20 +147,12 @@ input::-webkit-input-placeholder{
           <input class="from-inp" autocomplete='off' placeholder="输入手机号" v-model="from.iphone" />
         </li>
         <li>
-         <van-icon name="password-not-view" />
-          <input
-          type="password"
-          autocomplete='off'
-          placeholder="输入密码"
-          class="from-inp"
-          v-model="from.password" />
+          <van-icon name="password-not-view" />
+          <input type="password" autocomplete='off' placeholder="输入密码" class="from-inp" v-model="from.password" />
         </li>
       </ul>
     </div>
-    <van-button
-    class="login-from_submit"
-    type="default"
-    @click.native="submit">登录</van-button>
+    <van-button class="login-from_submit" type="default" @click.native="submit">登录</van-button>
 
     <div class="login-singIn">
       <van-button class="login-from_submit">立即注册</van-button>
@@ -177,7 +176,11 @@ export default {
       this.logIn(this.from).then(res => {
         if (res) {
           this.SET_ISLOTIN(true)
-          this.SET_USER(res.data[0])
+          let data = {
+            userName: res.data[0].userName,
+            userId: res.data[0].id
+          }
+          this.SET_USER(data)
         }
       })
     },
