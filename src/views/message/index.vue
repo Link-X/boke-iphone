@@ -30,7 +30,7 @@
           <div class="message-win_center">
             <div class="message-win_another" v-for="item in msgTest.msgArr" :key="item.id" :class="{'message-win_my': item.sign === 'my'}">
               <div class="message-win_img" v-if="item.sign === 'he'"><img src="../../../static/toxiang.png" /></div>
-              <span class="message-win_text">{{item.msg}}</span>
+              <span class="message-win_text" :class="{'message-win_text2' : item.sign === 'my'}">{{item.msg}}</span>
               <div class="message-win_img message-win_myImg" v-if="item.sign === 'my'"><img src="../../../static/toux2.jpg" /></div>
             </div>
           </div>
@@ -212,6 +212,13 @@ export default {
 }
 </script>
 
+<style lang='less'>
+.van-field--has-textarea .van-field__control {
+  max-height: 96px;
+}
+</style>
+
+
 <style lang='less' scoped>
 .van-cell_right {
   display: flex;
@@ -315,8 +322,14 @@ export default {
 
 .message-win_text {
   display: inline-block;
+  max-width: 284px;
+  padding: 6px;
   margin-left: 5px;
-  background-color: rgb(229, 229, 229)
+  background-color: rgb(229, 229, 229);
+  word-break: break-all;
+  white-space: pre-wrap;
+  border-radius: 5px;
+  box-shadow: 2px 2px 2px #ddd;
 }
 
 .message-win_myImg {
@@ -324,23 +337,22 @@ export default {
 }
 
 .message-win_text2 {
-  display: inline-block;
-  margin-right: 5px;
-  height: 100%;
-  background-color: rgb(18, 183, 245)
+  background-color: rgb(18, 183, 245);
+  box-shadow: 2px 2px 2px #c7c3c3;
 }
 
 .message-win_send {
   position: fixed;
   bottom: 0;
   width: 100%;
+  max-height: 116px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   border-top: 1px solid #ddd;
   background-color: #fff;
-    .van-cell-group {
-      flex-grow: 1;
-    }
+  .van-cell-group {
+    flex-grow: 1;
+  }
 }
 </style>
