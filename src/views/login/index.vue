@@ -178,7 +178,7 @@ export default {
           this.SET_ISLOTIN(true)
           let data = {
             userName: res.data[0].userName,
-            userId: res.data[0].id
+            userId: String(res.data[0].id)
           }
           this.SET_USER(data)
         }

@@ -1,8 +1,8 @@
 <template>
   <div class="message">
-    <Scroll :data='messList' class="message-scroll" @scroll='scroll' @scrollEnd='scrollEnd'>
+    <Scroll :data='messNumber' class="message-scroll" @scroll='scroll' @scrollEnd='scrollEnd'>
       <ul class="message-ul">
-        <li class="message-li" v-for="item in messList" :key="item.userId" @click="showMsgWin(item.userId)">
+        <li class="message-li" v-for="item in messList" :key="item.toUserId" @click="showMsgWin(item.toUserId)">
           <van-cell-swipe :right-width="65">
             <van-cell-group>
               <div class="van-cell_center" @click="enterRoom">
@@ -26,13 +26,15 @@
         <van-nav-bar :title="msgTest.userName" @click-left="msgWinClose">
           <van-icon class="layout-return" name="arrow-left" slot="left" />
         </van-nav-bar>
-        <div class="message-win_center">
-          <div class="message-win_another" v-for="item in msgTest.msgArr" :key="item.id" :class="{'message-win_my': item.sign === 'my'}">
-            <div class="message-win_img" v-if="item.sign === 'he'"><img src="../../../static/toxiang.png" /></div>
-            <span class="message-win_text">{{item.msg}}</span>
-            <div class="message-win_img message-win_myImg" v-if="item.sign === 'my'"><img src="../../../static/toux2.jpg" /></div>
+        <Scroll :data='msgTest.msgArr' class="message-scroll">
+          <div class="message-win_center">
+            <div class="message-win_another" v-for="item in msgTest.msgArr" :key="item.id" :class="{'message-win_my': item.sign === 'my'}">
+              <div class="message-win_img" v-if="item.sign === 'he'"><img src="../../../static/toxiang.png" /></div>
+              <span class="message-win_text">{{item.msg}}</span>
+              <div class="message-win_img message-win_myImg" v-if="item.sign === 'my'"><img src="../../../static/toux2.jpg" /></div>
+            </div>
           </div>
-        </div>
+        </Scroll>
         <div class="message-win_send">
           <van-cell-group>
             <van-field v-model="message" type="textarea" placeholder="请输入留言" rows="1" autosize />
@@ -45,101 +47,85 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapMutations } from 'vuex'
 import Scroll from '@/components/scroll.vue'
 export default {
   data () {
     return {
       msgWin: false,
       message: '',
-      messList: [
-        {
-          userName: '安妮海瑟薇',
+      messList: {
+        '2': {
+          userName: '许道斌',
           msgTitle: '今晚去哪吃',
-          msgArr: [
-            {
-              msg: '今天好冷',
-              sign: 'he',
-              id: Math.random() * 1000 + 'iphone'
-            },
-            {
-              msg: '下雪了',
-              sign: 'he',
-              id: Math.random() * 1000 + 'iphone'
-            },
-            {
-              msg: '好大的风啊',
-              sign: 'my',
-              id: Math.random() * 1000 + 'iphone'
-            },
-            {
-              msg: '是啊',
-              sign: 'he',
-              id: Math.random() * 1000 + 'iphone'
-            }
-          ],
+          msgArr: [],
           sign: 'private',
           date: '15:30',
-          userId: '123'
+          toUserId: '2'
         },
-        {
+        '1': {
           userName: 'xu',
           msgTitle: '',
           msgArr: [],
           sign: 'private',
           date: '15:30',
-          userId: '1'
-        },
-        {
-          userName: '许道斌',
-          msgTitle: '',
-          msgArr: [],
-          sign: 'private',
-          date: '15:30',
-          userId: '2'
+          toUserId: '1'
         }
-      ],
-      msgTest: {
-        userName: '安妮海瑟薇',
-        msgTitle: '今晚去哪吃',
-        msgArr: [],
-        date: '15:30',
-        userId: '123'
-      }
+      },
+      msgTest: {},
+      messNumber: []
     }
   },
   sockets: {
     connect: () => {
       console.log(this.$socket)
     },
+    yesEnter (data) {
+      this.SET_USER({
+        userName: this.user.userName,
+        userId: this.user.userId
+      })
+    },
     sys (data) {
       console.log(data)
     },
     privatChat (data) {
       // 监听私聊信息
-      // 如果当前在聊天则直接将数据加入渲染聊天页的对象中
       console.log(data)
-      if (data.userId === this.msgTest.userId) {
+      // 如果发送消息人 已经被打开，则直接加入聊天页数据
+      if (data.userId === this.msgTest.toUserId) {
         this.msgTest.msgArr.push({
           msg: data.msg,
           sign: 'he',
           id: Math.random() * 1000 + 'iphone'
         })
         this.msgTest.date = data.date
+        this.messList[data.userId].msgTitle = data.msg
         return
       }
-      for (let v of this.messList) {
-        if (v.userId === data.userId) {
-          v.msgTitle = data.msg
-          v.msgArr.push({
+
+      // 如果消息也有记录则 直接加入聊天记录
+      if (this.messList[data.userId]) {
+        this.messList[data.userId].msgArr.push({
+          msg: data.msg,
+          sign: 'he',
+          id: Math.random() * 1000 + 'iphone'
+        })
+        this.messList[data.userId].msgTitle = data.msg
+      } else {
+        this.messList[data.userId] = {
+          userName: data.userName,
+          msgTitle: data.msg,
+          msgArr: [{
             msg: data.msg,
             sign: 'he',
             id: Math.random() * 1000 + 'iphone'
-          })
-          // v.date = data.date
-        } else {
-          this.messList.push(data)
+          }],
+          sign: 'private',
+          date: '15:30',
+          toUserId: data.userId
         }
+        this.messNumber = Object.keys(this.messList)
       }
     }
   },
@@ -149,33 +135,34 @@ export default {
       userId: this.user.userId
     }
     console.log(data)
+    this.messNumber = Object.keys(this.messList)
     // 加入socket
     this.$socket.emit('newUser', data)
   },
   methods: {
-    showMsgWin (userId) {
+    showMsgWin (toUserId) {
       // 打开聊天
-      for (let v of this.messList) {
-        if (v.userId === userId) {
-          this.msgTest = JSON.parse(JSON.stringify(v))
+      for (let v in this.messList) {
+        if (v === toUserId) {
+          this.msgTest = JSON.parse(JSON.stringify(this.messList[v]))
+          console.log(this.msgTest)
         }
       }
       this.msgWin = true
     },
     msgWinClose () {
-      this.messList = this.messList.map(v => {
-        if (v.userId === this.msgTest.userId) {
-          v.msgArr = []
-          v.msgArr = this.msgTest.msgArr.concat([])
+      for (let v in this.messList) {
+        if (v === this.msgTest.toUserId) {
+          this.messList[v].msgArr = []
+          this.messList[v].msgArr = this.msgTest.msgArr.concat([])
         }
-        return v
-      })
+      }
       this.msgTest = {
         userName: '',
         msgTitle: '',
         msgArr: [],
         date: '',
-        userId: ''
+        toUserId: ''
       }
       this.msgWin = false
     },
@@ -188,8 +175,14 @@ export default {
         userName: this.msgTest.userName,
         sendName: this.user.userName,
         msg: this.message,
-        userId: this.user.userId
+        userId: this.user.userId,
+        toUserId: this.msgTest.toUserId
       }
+      this.msgTest.msgArr.push({
+        msg: this.message,
+        sign: 'my',
+        id: Math.random() * 1000 + 'iphone'
+      })
       this.$socket.emit('sendPrivateChat', msgData)
     },
     enterRoom (data) {
@@ -203,7 +196,10 @@ export default {
     },
     scrollEnd () {
       console.log(1)
-    }
+    },
+    ...mapMutations([
+      'SET_USER'
+    ])
   },
   computed: {
     ...mapGetters([
@@ -235,9 +231,7 @@ export default {
 }
 
 .message-win_center {
-  height: 100%;
-  padding-top: 20px;
-  overflow-y: scroll;
+  padding: 20px 15px 50px 15px;
 }
 
 .van-cell_center {
@@ -304,6 +298,7 @@ export default {
 .message-win_another {
   display: flex;
   align-items: center;
+  flex-wrap: row-reverse;
   margin-bottom: 10px;
 }
 
@@ -321,7 +316,6 @@ export default {
 .message-win_text {
   display: inline-block;
   margin-left: 5px;
-  height: 100%;
   background-color: rgb(229, 229, 229)
 }
 
@@ -342,5 +336,11 @@ export default {
   width: 100%;
   display: flex;
   align-items: center;
+  justify-content: space-between;
+  border-top: 1px solid #ddd;
+  background-color: #fff;
+    .van-cell-group {
+      flex-grow: 1;
+    }
 }
 </style>
