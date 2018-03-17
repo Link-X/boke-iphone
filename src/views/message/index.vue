@@ -113,7 +113,7 @@ export default {
         })
         this.messList[data.userId].msgTitle = data.msg
       } else {
-        this.messList[data.userId] = {
+        let obj = {
           userName: data.userName,
           msgTitle: data.msg,
           msgArr: [{
@@ -125,7 +125,20 @@ export default {
           date: '15:30',
           toUserId: data.userId
         }
-        this.messNumber = Object.keys(this.messList)
+        this.$set(this.messList, data.userId, obj)
+        this.messNumber.push(data.userId)
+        // this.messList[data.userId] = {
+        //   userName: data.userName,
+        //   msgTitle: data.msg,
+        //   msgArr: [{
+        //     msg: data.msg,
+        //     sign: 'he',
+        //     id: Math.random() * 1000 + 'iphone'
+        //   }],
+        //   sign: 'private',
+        //   date: '15:30',
+        //   toUserId: data.userId
+        // }
       }
     }
   },
@@ -217,7 +230,6 @@ export default {
   max-height: 96px;
 }
 </style>
-
 
 <style lang='less' scoped>
 .van-cell_right {
