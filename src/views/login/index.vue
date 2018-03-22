@@ -183,6 +183,8 @@ export default {
           this.SET_USER(data)
         }
       })
+      // this.SET_ISLOTIN(true)
+      // this.SET_USER({userName: 'xu', userId: '1'})
     },
     ...mapActions([
       'logIn'

@@ -91,7 +91,7 @@ export default {
     },
     privatChat (data) {
       // 监听私聊信息
-      console.log(data)
+      console.log(data, '来消息啦')
       // 如果发送消息人 已经被打开，则直接加入聊天页数据
       if (data.userId === this.msgTest.toUserId) {
         this.msgTest.msgArr.push({
@@ -161,6 +161,7 @@ export default {
           console.log(this.msgTest)
         }
       }
+      console.log(this.msgTest)
       this.msgWin = true
     },
     msgWinClose () {
@@ -181,7 +182,8 @@ export default {
     },
     sendMessage () {
       // 发送消息
-      if (!this.msgTest.userName) {
+      console.log(this.msgTest)
+      if (!this.msgTest.toUserId) {
         return
       }
       let msgData = {

@@ -49,8 +49,8 @@ export default {
       this.addSocket = true
     },
     layoutClick (e) {
-      console.log('add-socket_div')
-      console.log(event.path)
+      // console.log('add-socket_div')
+      // console.log(event.path)
     },
     tabChange (val) {
       this.$router.push({
