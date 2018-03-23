@@ -221,6 +221,7 @@ export default {
         sign: 'my',
         id: Math.random() * 1000 + 'iphone'
       })
+      this.message = ''
       this.$socket.emit('sendPrivateChat', msgData)
     },
     enterRoom (data) {

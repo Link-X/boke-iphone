@@ -8,5 +8,8 @@ export default {
   },
   getRoom ({ commit, state }, pageData) {
     return http.post('/user/getFriend', pageData)
+  },
+  addFriend ({ commit, state }, pageData) {
+    return http.post('/user/addFriend', pageData)
   }
 }

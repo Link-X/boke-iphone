@@ -73,7 +73,7 @@ export default {
     return {
       active: 0,
       poputName: '好友账号',
-      userNumber: '',
+      userNumber: '1555555',
       addPoput: false,
       addSocket: false,
       navData: ['message', 'friend', 'blog', 'activity']
@@ -107,7 +107,7 @@ export default {
         }
         this.addPoput = false
         this.addSocket = false
-        this.SET_FRIEND(data.data)
+        this.SET_FRIEND(data.data[0])
         this.$router.push({
           path: '/addFriend'
         })
