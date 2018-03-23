@@ -1,11 +1,18 @@
 <template>
   <div class="message">
-    <Scroll :data='messNumber' class="message-scroll" @scroll='scroll' @scrollEnd='scrollEnd'>
+    <Scroll :data='messNumber'
+      class="message-scroll"
+      @scroll='scroll'
+      @scrollEnd='scrollEnd'>
       <ul class="message-ul">
-        <li class="message-li" v-for="item in messList" :key="item.toUserId" @click="showMsgWin(item.toUserId)">
+        <li class="message-li"
+          v-for="item in messList"
+          :key="item.toUserId"
+          @click="showMsgWin(item.toUserId)">
           <van-cell-swipe :right-width="65">
             <van-cell-group>
-              <div class="van-cell_center" @click="enterRoom">
+              <div class="van-cell_center"
+                @click="enterRoom">
                 <div class="cell-center_img">
                   <img src="../../../static/toxiang.png" />
                 </div>
@@ -16,28 +23,45 @@
                 <div class="cell-center_time">{{item.date}}</div>
               </div>
             </van-cell-group>
-            <span class="van-cell_right" slot="right">删除</span>
+            <span class="van-cell_right"
+              slot="right">删除</span>
           </van-cell-swipe>
         </li>
       </ul>
     </Scroll>
-    <van-popup v-model="msgWin" position="right" :overlay="false">
+    <van-popup v-model="msgWin"
+      position="right"
+      :overlay="false">
       <div class="message-win">
-        <van-nav-bar :title="msgTest.userName" @click-left="msgWinClose">
-          <van-icon class="layout-return" name="arrow-left" slot="left" />
+        <van-nav-bar :title="msgTest.userName"
+          @click-left="msgWinClose">
+          <van-icon class="layout-return"
+            name="arrow-left"
+            slot="left" />
         </van-nav-bar>
-        <Scroll :data='msgTest.msgArr' class="message-scroll">
+        <Scroll :data='msgTest.msgArr'
+          class="message-scroll">
           <div class="message-win_center">
-            <div class="message-win_another" v-for="item in msgTest.msgArr" :key="item.id" :class="{'message-win_my': item.sign === 'my'}">
-              <div class="message-win_img" v-if="item.sign === 'he'"><img src="../../../static/toxiang.png" /></div>
-              <span class="message-win_text" :class="{'message-win_text2' : item.sign === 'my'}">{{item.msg}}</span>
-              <div class="message-win_img message-win_myImg" v-if="item.sign === 'my'"><img src="../../../static/toux2.jpg" /></div>
+            <div class="message-win_another"
+              v-for="item in msgTest.msgArr"
+              :key="item.id"
+              :class="{'message-win_my': item.sign === 'my'}">
+              <div class="message-win_img"
+                v-if="item.sign === 'he'"><img src="../../../static/toxiang.png" /></div>
+              <span class="message-win_text"
+                :class="{'message-win_text2' : item.sign === 'my'}">{{item.msg}}</span>
+              <div class="message-win_img message-win_myImg"
+                v-if="item.sign === 'my'"><img src="../../../static/toux2.jpg" /></div>
             </div>
           </div>
         </Scroll>
         <div class="message-win_send">
           <van-cell-group>
-            <van-field v-model="message" type="textarea" placeholder="请输入留言" rows="1" autosize />
+            <van-field v-model="message"
+              type="textarea"
+              placeholder="请输入留言"
+              rows="1"
+              autosize />
           </van-cell-group>
           <van-button @click="sendMessage">发送</van-button>
         </div>
@@ -147,7 +171,6 @@ export default {
       userName: this.user.userName,
       userId: this.user.userId
     }
-    console.log(data)
     this.messNumber = Object.keys(this.messList)
     // 加入socket
     this.$socket.emit('newUser', data)
@@ -240,7 +263,7 @@ export default {
   align-items: center;
   width: 65px;
   height: 100%;
-  font-size: .16rem;
+  font-size: 0.16rem;
   background-color: red;
   color: #fff;
 }
@@ -256,18 +279,18 @@ export default {
 }
 
 .van-cell_center {
-  height: .5rem;
-  padding: .15rem;
+  height: 0.5rem;
+  padding: 0.15rem;
   display: flex;
   align-items: center;
   position: relative;
   overflow: hidden;
   .cell-center_img {
-    width: .5rem;
-    height: .5rem;
+    width: 0.5rem;
+    height: 0.5rem;
     border-radius: 50%;
     overflow: hidden;
-    margin-right: .15rem;
+    margin-right: 0.15rem;
     img {
       width: 100%;
       height: 100%;
@@ -281,11 +304,11 @@ export default {
 }
 
 .cell-center_text {
-  line-height: .25rem;
+  line-height: 0.25rem;
   width: 65%;
   .center-text_title {
     font-weight: bold;
-    font-size: .16rem;
+    font-size: 0.16rem;
   }
   div {
     width: 100%;
@@ -297,7 +320,7 @@ export default {
 
 .cell-center_time {
   position: absolute;
-  right: .1rem;
+  right: 0.1rem;
   color: #756a6a;
 }
 
@@ -308,7 +331,7 @@ export default {
   right: 0;
   bottom: 0;
   margin: auto;
-  transition: all .2s;
+  transition: all 0.2s;
   overflow: hidden;
 }
 
@@ -324,8 +347,8 @@ export default {
 }
 
 .message-win_img {
-  width: .4rem;
-  height: .4rem;
+  width: 0.4rem;
+  height: 0.4rem;
   border-radius: 50%;
   overflow: hidden;
   img {
