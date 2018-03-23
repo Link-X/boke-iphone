@@ -3,6 +3,7 @@
     "message": "消息",
     "friend": "好友",
     "blog": "博文",
-    "activity": "动态"
+    "activity": "动态",
+    "addFriend": "添加好友"
   }
 }

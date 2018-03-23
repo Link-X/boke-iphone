@@ -5,11 +5,11 @@
       :title="headerTitle"
       @click-left="pageClose"
       @click-right='onClickRight'>
-      <van-icon v-if="!navVar"
+      <van-icon v-if="navVar < 0"
         class="layout-return"
         name="arrow-left"
         slot="left" />
-      <van-icon v-if="navVar"
+      <van-icon v-if="navVar >= 0"
         class="layout-add"
         name="add-o"
         slot="right" />
@@ -119,7 +119,7 @@ export default {
       })
     },
     pageClose () {
-      console.log(11)
+      this.$router.back()
     },
     ...mapMutations([
       'SET_FRIEND'
@@ -134,7 +134,7 @@ export default {
       return resource.header[this.$route.name]
     },
     navVar () {
-      let data = ['占位符', '消息', '好友', '博文', '动态']
+      let data = ['消息', '好友', '博文', '动态']
       return data.indexOf(this.headerTitle)
     }
   }

@@ -1,5 +1,15 @@
 <template>
-  <div></div>
+  <div class="add-friend">
+    <div class="add-friend_title">
+      <div class="friend-title_left">
+        <span>账号:</span>
+        <span>用户名:</span>
+      </div>
+      <div class="friend-title_img">
+        <img src="../../../static/toxiang.png">
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -16,6 +26,8 @@ export default {
 }
 </script>
 
-<style>
+<style lang='less'>
+  .add-friend {
 
+  }
 </style>
