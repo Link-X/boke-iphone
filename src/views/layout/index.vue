@@ -67,7 +67,7 @@
 
 <script>
 import resource from '@/utils/resource.json'
-import { mapActions } from 'vuex'
+import { mapActions, mapMutations } from 'vuex'
 export default {
   data () {
     return {
@@ -95,17 +95,22 @@ export default {
       this.addPoput = true
     },
     getAccount () {
-      // 添加好友，群
       let data = {
         userNumber: this.userNumber
       }
       let ajaxName = this.poputName === '好友账号' ? 'getFriend' : 'getRoom'
       this[ajaxName](data).then(data => {
-        console.log(data)
+        // 查找账号信息
         if (!data.data.length) {
           this.$toast.fail('该账号不存在哦')
+          return
         }
-        this.addSocket = !this.addSocket
+        this.addPoput = false
+        this.addSocket = false
+        this.SET_FRIEND(data.data)
+        this.$router.push({
+          path: '/addFriend'
+        })
       })
     },
     tabChange (val) {
@@ -116,6 +121,9 @@ export default {
     pageClose () {
       console.log(11)
     },
+    ...mapMutations([
+      'SET_FRIEND'
+    ]),
     ...mapActions([
       'getFriend',
       'getRoom'

@@ -10,7 +10,8 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     isLogin: false,
-    user: {}
+    user: {},
+    friend: {}
   },
   getters,
   actions,
