@@ -57,7 +57,8 @@
       </van-cell-group>
       <div class="poput-btn_box">
         <div class="btn-box_div">
-          <van-button type="primary" @click="getAccount">查找</van-button>
+          <van-button type="primary"
+            @click="getAccount">查找</van-button>
           <van-button @click="addPoput = false">取消</van-button>
         </div>
       </div>
@@ -137,6 +138,11 @@ export default {
     navVar () {
       let data = ['消息', '好友', '博文', '动态']
       return data.indexOf(this.headerTitle)
+    }
+  },
+  watch: {
+    headerTitle () {
+      this.addSocket = false
     }
   }
 }
