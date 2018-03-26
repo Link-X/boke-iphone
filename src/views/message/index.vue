@@ -101,6 +101,14 @@ export default {
           sign: 'room',
           date: '15:30',
           toUserId: '123'
+        },
+        '1234': {
+          userName: '系统群2',
+          msgTitle: '',
+          msgArr: [],
+          sign: 'room',
+          date: '15:30',
+          toUserId: '1234'
         }
       },
       msgTest: {},
@@ -140,6 +148,8 @@ export default {
     // 加入socket
     this.$socket.emit('newUser', data)
     this.pageCome()
+    // 自动加入2个系统群
+    this.enterStatemRoom()
   },
   methods: {
     pageCome () {
@@ -267,6 +277,17 @@ export default {
         }
         this.$set(this.messList, data.userId, obj)
         this.messNumber.push(data.userId)
+      }
+    },
+    enterStatemRoom () {
+      for (let i in this.messList) {
+        if (this.messList[i].sign === 'room') {
+          let data = {
+            roomId: this.messList[i].toUserId,
+            userName: this.user.userName
+          }
+          this.enterRoom(data)
+        }
       }
     },
     sendRoomChat () {
