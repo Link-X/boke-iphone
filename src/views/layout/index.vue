@@ -107,6 +107,7 @@ export default {
         }
         this.addPoput = false
         this.addSocket = false
+        resource.header.addFriend = '添加好友'
         this.SET_FRIEND(data.data[0])
         this.$router.push({
           path: '/addFriend'

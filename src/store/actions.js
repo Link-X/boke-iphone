@@ -11,5 +11,8 @@ export default {
   },
   addFriend ({ commit, state }, pageData) {
     return http.post('/user/addFriend', pageData)
+  },
+  getFriendList ({ commit, state }, pageData) {
+    return http.post('/user/friendList', pageData)
   }
 }

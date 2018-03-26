@@ -138,7 +138,7 @@ export default {
         this.messList[data.userId].msgTitle = data.msg
       } else {
         let obj = {
-          userName: data.userName,
+          userName: data.sendName,
           msgTitle: data.msg,
           msgArr: [{
             msg: data.msg,
@@ -174,6 +174,17 @@ export default {
     this.messNumber = Object.keys(this.messList)
     // 加入socket
     this.$socket.emit('newUser', data)
+
+    if (this.$route.query.id) {
+      this.$set(this.messList, this.$route.query.id, {
+        userName: this.$route.query.name,
+        msgTitle: '',
+        msgArr: [],
+        sign: 'private',
+        date: '15:30',
+        toUserId: this.$route.query.id
+      })
+    }
   },
   methods: {
     showMsgWin (toUserId) {
@@ -192,6 +203,7 @@ export default {
         if (v === this.msgTest.toUserId) {
           this.messList[v].msgArr = []
           this.messList[v].msgArr = this.msgTest.msgArr.concat([])
+          this.messList[v].msgTitle = this.msgTest.msgArr[this.msgTest.msgArr.length - 1].msg
         }
       }
       this.msgTest = {

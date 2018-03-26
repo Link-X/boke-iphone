@@ -112,3 +112,14 @@ a:active {
 .van-toast--top {
     top: 150px!important;
 }
+
+.scroll-item {
+  position: fixed;
+  top: 46px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+  transition: all 0.2s;
+  overflow: hidden;
+}
