@@ -13,7 +13,7 @@
             <van-cell-group>
               <div class="van-cell_center">
                 <div class="cell-center_img">
-                  <img src="../../../static/toxiang.png" />
+                  <img :src="item.userImg" />
                 </div>
                 <div class="cell-center_text">
                   <div class="center-text_title">{{item.userName}}</div>
@@ -83,6 +83,7 @@ export default {
           msgTitle: '今晚去哪吃',
           msgArr: [],
           sign: 'private',
+          userImg: 'http://pic29.photophoto.cn/20131204/0034034499213463_b.jpg',
           date: '15:30',
           toUserId: '2'
         },
@@ -90,6 +91,7 @@ export default {
           userName: 'xu',
           msgTitle: '',
           msgArr: [],
+          userImg: 'http://f2.topitme.com/2/b9/71/112660598401871b92l.jpg',
           sign: 'private',
           date: '15:30',
           toUserId: '1'
@@ -99,6 +101,7 @@ export default {
           msgTitle: '',
           msgArr: [],
           sign: 'room',
+          userImg: '../../../static/toxiang.png',
           date: '15:30',
           toUserId: '123'
         },
@@ -106,6 +109,7 @@ export default {
           userName: '系统群2',
           msgTitle: '',
           msgArr: [],
+          userImg: '../../../static/toxiang.png',
           sign: 'room',
           date: '15:30',
           toUserId: '1234'
@@ -160,6 +164,7 @@ export default {
           msgTitle: '',
           msgArr: [],
           sign: 'private',
+          userImg: this.$route.query.userImg,
           date: '15:30',
           toUserId: this.$route.query.id
         })

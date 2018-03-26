@@ -13,7 +13,7 @@
           :key="item.friendId"
           @click="friendMess(item)">
           <div class="ul-li_img">
-            <img src="../../../static/toxiang.png"
+            <img :src="item.userImg"
               alt="">
           </div>
           <div class="ul-li_text">

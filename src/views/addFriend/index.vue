@@ -6,7 +6,7 @@
         <p>用户名: <span class="title-left_span">{{friend.userName}}</span></p>
       </div>
       <div class="friend-title_img">
-        <img src="../../../static/toxiang.png">
+        <img :src="friend.userImg">
       </div>
     </div>
     <div class="add-friend_center">
@@ -47,7 +47,8 @@ export default {
         userName: this.user.userName,
         userId: this.user.userId,
         friendId: this.friend.id,
-        signature: this.friend.signature
+        signature: this.friend.signature,
+        userImg: this.friend.userImg
       }
       this.addFriend(data).then(data => {
         let jude = {
@@ -64,7 +65,7 @@ export default {
     sendMess () {
       this.$router.push({
         path: '/message',
-        query: { id: String(this.friendId), name: this.friend.userName }
+        query: { id: String(this.friendId), name: this.friend.userName, userImg: this.friend.userImg }
       })
     },
     ...mapActions([
