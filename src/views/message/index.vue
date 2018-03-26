@@ -11,8 +11,7 @@
           @click="showMsgWin(item.toUserId)">
           <van-cell-swipe :right-width="65">
             <van-cell-group>
-              <div class="van-cell_center"
-                @click="enterRoom">
+              <div class="van-cell_center">
                 <div class="cell-center_img">
                   <img src="../../../static/toxiang.png" />
                 </div>
@@ -94,6 +93,14 @@ export default {
           sign: 'private',
           date: '15:30',
           toUserId: '1'
+        },
+        '123': {
+          userName: '系统群',
+          msgTitle: '',
+          msgArr: [],
+          sign: 'room',
+          date: '15:30',
+          toUserId: '123'
         }
       },
       msgTest: {},
@@ -116,7 +123,115 @@ export default {
     privatChat (data) {
       // 监听私聊信息
       console.log(data, '来消息啦')
-      // 如果发送消息人 已经被打开，则直接加入聊天页数据
+      this.setMessage(data)
+    },
+    roomMessage (data) {
+      // 群消息
+      console.log(data, '群消息来啦')
+      this.setMessage(data)
+    }
+  },
+  created () {
+    let data = {
+      userName: this.user.userName,
+      userId: this.user.userId
+    }
+    this.messNumber = Object.keys(this.messList)
+    // 加入socket
+    this.$socket.emit('newUser', data)
+    this.pageCome()
+  },
+  methods: {
+    pageCome () {
+      // 从别的页面进入聊天，打开聊天
+      if (this.$route.query.id) {
+        this.$set(this.messList, this.$route.query.id, {
+          userName: this.$route.query.name,
+          msgTitle: '',
+          msgArr: [],
+          sign: 'private',
+          date: '15:30',
+          toUserId: this.$route.query.id
+        })
+        this.showMsgWin(this.$route.query.id)
+      }
+    },
+    showMsgWin (toUserId) {
+      // 打开聊天窗口
+      for (let v in this.messList) {
+        if (v === toUserId) {
+          this.msgTest = JSON.parse(JSON.stringify(this.messList[v]))
+        }
+      }
+      if (this.msgTest.sign === 'room') {
+        // 群聊茶窗口
+        let data = {
+          userName: this.user.userName,
+          roomId: this.msgTest.toUserId
+        }
+        this.enterRoom(data)
+      }
+      this.msgWin = true
+    },
+    msgWinClose () {
+      // 关闭聊天窗口
+      for (let v in this.messList) {
+        if (v === this.msgTest.toUserId) {
+          this.messList[v].msgArr = []
+          this.messList[v].msgArr = this.msgTest.msgArr.concat([])
+          if (this.msgTest.msgArr.length) {
+            this.messList[v].msgTitle = this.msgTest.msgArr[this.msgTest.msgArr.length - 1].msg
+          }
+        }
+      }
+      this.msgTest = {
+        userName: '',
+        msgTitle: '',
+        msgArr: [],
+        sign: '',
+        date: '',
+        toUserId: ''
+      }
+      this.msgWin = false
+    },
+    sendMessage () {
+      // 发送消息
+      console.log(this.msgTest)
+      let msgData = {
+        userName: this.msgTest.userName,
+        sendName: this.user.userName,
+        msg: this.message,
+        sign: 'private',
+        userId: this.user.userId,
+        toUserId: this.msgTest.toUserId,
+        roomId: this.msgTest.toUserId
+      }
+      this.msgTest.msgArr.push({
+        msg: this.message,
+        sign: 'my',
+        id: Math.random() * 1000 + 'iphone'
+      })
+      this.message = ''
+      if (this.msgTest.sign === 'private') {
+        // 私聊
+        this.$socket.emit('sendPrivateChat', msgData)
+        return
+      }
+      // 群聊
+      msgData.sign = 'room'
+      msgData.userId = this.msgTest.toUserId
+      this.$socket.emit('sendRoomChat', msgData)
+    },
+    enterRoom (data) {
+      // 加入群聊
+      let senddData = {
+        roomId: data.roomId,
+        userName: data.userName
+      }
+      this.$socket.emit('join', senddData)
+    },
+    setMessage (data) {
+      // 如果发送消息人或群 已经被打开，则直接加入聊天页数据
       if (data.userId === this.msgTest.toUserId) {
         this.msgTest.msgArr.push({
           msg: data.msg,
@@ -128,7 +243,7 @@ export default {
         return
       }
 
-      // 如果消息也有记录则 直接加入聊天记录
+      // 如果消息有记录则 直接加入聊天记录
       if (this.messList[data.userId]) {
         this.messList[data.userId].msgArr.push({
           msg: data.msg,
@@ -145,104 +260,14 @@ export default {
             sign: 'he',
             id: Math.random() * 1000 + 'iphone'
           }],
-          sign: 'private',
+          sign: data.sign,
           date: '15:30',
-          toUserId: data.userId
+          toUserId: data.userId,
+          roomId: data.roomId
         }
         this.$set(this.messList, data.userId, obj)
         this.messNumber.push(data.userId)
-        // this.messList[data.userId] = {
-        //   userName: data.userName,
-        //   msgTitle: data.msg,
-        //   msgArr: [{
-        //     msg: data.msg,
-        //     sign: 'he',
-        //     id: Math.random() * 1000 + 'iphone'
-        //   }],
-        //   sign: 'private',
-        //   date: '15:30',
-        //   toUserId: data.userId
-        // }
       }
-    }
-  },
-  created () {
-    let data = {
-      userName: this.user.userName,
-      userId: this.user.userId
-    }
-    this.messNumber = Object.keys(this.messList)
-    // 加入socket
-    this.$socket.emit('newUser', data)
-    this.pageCome()
-  },
-  methods: {
-    pageCome () {
-      if (this.$route.query.id) {
-        this.$set(this.messList, this.$route.query.id, {
-          userName: this.$route.query.name,
-          msgTitle: '',
-          msgArr: [],
-          sign: 'private',
-          date: '15:30',
-          toUserId: this.$route.query.id
-        })
-        this.showMsgWin(this.$route.query.id)
-      }
-    },
-    showMsgWin (toUserId) {
-      // 打开聊天
-      for (let v in this.messList) {
-        if (v === toUserId) {
-          this.msgTest = JSON.parse(JSON.stringify(this.messList[v]))
-          console.log(this.msgTest)
-        }
-      }
-      console.log(this.msgTest)
-      this.msgWin = true
-    },
-    msgWinClose () {
-      for (let v in this.messList) {
-        if (v === this.msgTest.toUserId) {
-          this.messList[v].msgArr = []
-          this.messList[v].msgArr = this.msgTest.msgArr.concat([])
-          if (this.msgTest.msgArr.length) {
-            this.messList[v].msgTitle = this.msgTest.msgArr[this.msgTest.msgArr.length - 1].msg
-          }
-        }
-      }
-      this.msgTest = {
-        userName: '',
-        msgTitle: '',
-        msgArr: [],
-        date: '',
-        toUserId: ''
-      }
-      this.msgWin = false
-    },
-    sendMessage () {
-      // 发送消息
-      console.log(this.msgTest)
-      if (!this.msgTest.toUserId) {
-        return
-      }
-      let msgData = {
-        userName: this.msgTest.userName,
-        sendName: this.user.userName,
-        msg: this.message,
-        userId: this.user.userId,
-        toUserId: this.msgTest.toUserId
-      }
-      this.msgTest.msgArr.push({
-        msg: this.message,
-        sign: 'my',
-        id: Math.random() * 1000 + 'iphone'
-      })
-      this.message = ''
-      this.$socket.emit('sendPrivateChat', msgData)
-    },
-    enterRoom (data) {
-      this.$socket.emit('join', { roomId: 123, userName: this.user.userName })
     },
     sendRoomChat () {
       this.$socket.emit('sendRoomChat', { roomId: 123, msg: `我是${this.user.userName}` })
