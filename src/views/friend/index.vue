@@ -1,5 +1,11 @@
 <template>
   <div class="friend-list">
+    <van-tabs :active="active">
+      <van-tab title="好友">
+      </van-tab>
+      <van-tab title="群聊">
+      </van-tab>
+    </van-tabs>
     <Scroll class="scroll-item"
       :data='friendLIst'>
       <ul class="friend-list_ul">
@@ -27,6 +33,7 @@ import Scroll from '@/components/scroll.vue'
 export default {
   data () {
     return {
+      active: 0,
       friendLIst: []
     }
   },
@@ -73,7 +80,7 @@ export default {
 <style lang='less' scoped>
 .friend-list_ul {
   position: relative;
-  padding-bottom: 55px;
+  padding: 50px 0 55px 0;
   li {
     height: 0.5rem;
     padding: 0.1rem 0.15rem;
