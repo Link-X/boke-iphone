@@ -1,6 +1,6 @@
 <template>
   <div class="friend-list">
-    <van-tabs :active="active">
+    <van-tabs :active="active" @click="onClick">
       <van-tab title="好友">
       </van-tab>
       <van-tab title="群聊">
@@ -57,6 +57,9 @@ export default {
           query: { friendId: friend.friendId }
         })
       })
+    },
+    onClick (index, title) {
+      console.log(index, title)
     },
     ...mapActions([
       'getFriendList',
