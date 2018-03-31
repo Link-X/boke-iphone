@@ -104,11 +104,14 @@ export default {
       }
       this.getFriend(data).then(data => {
         // 查找账号信息
-        let isNull = this.setData('SET_FRIEND', '添加好友', [data.data[0]])
-        console.log(isNull, 123)
-        if (isNull) {
+        if (!data.data.length) {
+          this.$toast.fail('账号不存在')
           return
         }
+        this.addPoput = false
+        this.addSocket = false
+        this.SET_FRIEND(data.data[0])
+        resource.header.addFriend = '添加好友'
         this.$router.push({
           path: '/addFriend'
         })
@@ -120,25 +123,17 @@ export default {
       }
       this.getRoom(paramsData).then(data => {
         // 查找群
-        let isNull = this.setData('SET_GROUP', '添加群聊', [data.data])
-        if (isNull) {
+        if (!data.data.length) {
+          this.$toast.fail('改群名称不存在')
           return
         }
+        this.addPoput = false
+        this.addSocket = false
+        this.SET_GROUP(data.data)
         this.$router.push({
           path: '/roomlist'
         })
       })
-    },
-    setData (mutationsname, title, data) {
-      if (!data[0] || !data[0].length) {
-        this.$toast.fail(`无法${title}改账号不存在`)
-        return true
-      }
-      this.addPoput = false
-      this.addSocket = false
-      resource.header.addFriend = title
-      this.userNumber = ''
-      this[mutationsname](data[0])
     },
     tabChange (val) {
       this.$router.push({
