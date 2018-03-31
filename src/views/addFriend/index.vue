@@ -2,24 +2,35 @@
   <div class="add-friend">
     <div class="add-friend_title">
       <div class="friend-title_left">
-        <p>账号: <span class="title-left_span">{{friend.iphone}}</span></p>
-        <p>用户名: <span class="title-left_span">{{friend.userName}}</span></p>
+        <p>账号:
+          <span class="title-left_span">{{friend.iphone}}</span>
+        </p>
+        <p>用户名:
+          <span class="title-left_span">{{friend.userName}}</span>
+        </p>
       </div>
       <div class="friend-title_img">
         <img :src="friend.userImg">
       </div>
     </div>
     <div class="add-friend_center">
-      <p>创建时间: <span class="title-left_span">{{createDate}}</span></p>
+      <p>创建时间:
+        <span class="title-left_span">{{createDate}}</span>
+      </p>
       <div>个性签名:
-        <div class="friend-center_text"><span class="title-left_span">{{friend.signature}}</span></div>
+        <div class="friend-center_text">
+          <span class="title-left_span">{{friend.signature}}</span>
+        </div>
       </div>
     </div>
     <div class="add-friend_btn">
       <van-button size='large'
         type="primary"
-        @click="addFrien" v-if="!friendId">添加好友</van-button>
-        <van-button size='large' @click="sendMess" v-else>发送消息</van-button>
+        @click="addFrien"
+        v-if="!friendId">添加好友</van-button>
+      <van-button size='large'
+        @click="sendMess"
+        v-else>发送消息</van-button>
     </div>
   </div>
 </template>
@@ -53,7 +64,10 @@ export default {
       this.addFriend(data).then(data => {
         let jude = {
           'add': () => {
-            this.$toast('添加成功')
+            this.$toast({
+              position: 'top',
+              message: '添加成功'
+            })
           },
           'exist': () => {
             this.$toast({
@@ -68,7 +82,12 @@ export default {
     sendMess () {
       this.$router.push({
         path: '/message',
-        query: { id: String(this.friendId), name: this.friend.userName, userImg: this.friend.userImg }
+        query: {
+          id: String(this.friendId),
+          name: this.friend.userName,
+          userImg: this.friend.userImg,
+          sign: 'private'
+        }
       })
     },
     ...mapActions([

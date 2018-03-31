@@ -163,7 +163,7 @@ export default {
           userName: this.$route.query.name,
           msgTitle: '',
           msgArr: [],
-          sign: 'private',
+          sign: this.$route.query.sign,
           userImg: this.$route.query.userImg,
           date: '15:30',
           toUserId: this.$route.query.id
@@ -211,12 +211,11 @@ export default {
     },
     sendMessage () {
       // 发送消息
-      console.log(this.msgTest)
       let msgData = {
         userName: this.msgTest.userName,
         sendName: this.user.userName,
         msg: this.message,
-        sign: 'private',
+        sign: this.msgTest.sign,
         userId: this.user.userId,
         toUserId: this.msgTest.toUserId,
         roomId: this.msgTest.toUserId
@@ -227,7 +226,9 @@ export default {
         id: Math.random() * 1000 + 'iphone'
       })
       this.message = ''
+      console.log(msgData, this.msgTest, 2222)
       if (this.msgTest.sign === 'private') {
+        debugger
         // 私聊
         this.$socket.emit('sendPrivateChat', msgData)
         return
@@ -246,6 +247,7 @@ export default {
       this.$socket.emit('join', senddData)
     },
     setMessage (data) {
+      console.log(data, 123456)
       // 如果发送消息人或群 已经被打开，则直接加入聊天页数据
       if (data.userId === this.msgTest.toUserId) {
         this.msgTest.msgArr.push({
@@ -280,6 +282,7 @@ export default {
           toUserId: data.userId,
           roomId: data.roomId
         }
+        console.log(data, obj, 12333333)
         this.$set(this.messList, data.userId, obj)
         this.messNumber.push(data.userId)
       }

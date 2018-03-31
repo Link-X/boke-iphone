@@ -1,6 +1,7 @@
 <template>
   <div class="friend-list">
-    <van-tabs :active="active" @click="onClick">
+    <van-tabs :active="active"
+      @click="onClick">
       <van-tab title="好友">
       </van-tab>
       <van-tab title="群聊">
@@ -22,7 +23,8 @@
           </div>
         </li>
       </ul>
-      <div v-if="!friendList.length" class="friend-list_null">
+      <div v-if="!friendList.length"
+        class="friend-list_null">
         没有好友，快去看看吧
       </div>
     </Scroll>
@@ -60,7 +62,9 @@ export default {
         this.SET_FRIEND(data.data[0])
         this.$router.push({
           path: '/addFriend',
-          query: { friendId: friend.friendId }
+          query: {
+            friendId: friend.friendId
+          }
         })
       })
     },
