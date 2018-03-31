@@ -53,7 +53,7 @@ export default {
       resource.header.addFriend = friend.friendUserName
 
       let data = {
-        userNumber: friend.friendIphone
+        iphone: friend.friendIphone
       }
       this.getFriend(data).then(data => {
         // 获取好友资料

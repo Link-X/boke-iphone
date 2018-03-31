@@ -56,7 +56,10 @@ export default {
             this.$toast('添加成功')
           },
           'exist': () => {
-            this.$toast('ta已经是您的好友啦')
+            this.$toast({
+              position: 'top',
+              message: 'ta已经是您的好友啦'
+            })
           }
         }
         jude[data.data.type]()

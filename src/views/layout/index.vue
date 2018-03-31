@@ -105,7 +105,10 @@ export default {
       this.getFriend(data).then(data => {
         // 查找账号信息
         if (!data.data.length) {
-          this.$toast.fail('账号不存在')
+          this.$toast.fail({
+            position: 'top',
+            message: '账号不存在'
+          })
           return
         }
         this.addPoput = false
@@ -124,7 +127,10 @@ export default {
       this.getRoom(paramsData).then(data => {
         // 查找群
         if (!data.data.length) {
-          this.$toast.fail('改群名称不存在')
+          this.$toast.fail({
+            position: 'top',
+            message: '群名称不存在'
+          })
           return
         }
         this.addPoput = false
