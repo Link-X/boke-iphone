@@ -169,6 +169,7 @@ export default {
   },
   watch: {
     headerTitle () {
+      this.active = this.navData.indexOf(this.$route.name)
       this.addSocket = false
     }
   }
