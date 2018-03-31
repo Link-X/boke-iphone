@@ -111,7 +111,6 @@ export default {
         iphone: this.singUpData.iphone,
         password: this.singUpData.password
       }
-      console.log(this.singUpData, logInForm)
       this.logIn(logInForm).then(res => {
         if (res) {
           this.SET_ISLOTIN(true)

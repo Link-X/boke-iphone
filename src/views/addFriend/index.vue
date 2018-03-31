@@ -47,7 +47,7 @@ export default {
     if (!this.friend.iphone || !this.user.userId) {
       this.$router.back()
     }
-    console.log(this.$route.query.friendId)
+    // console.log(this.$route.query.friendId)
     this.friendId = this.$route.query.friendId
   },
   methods: {

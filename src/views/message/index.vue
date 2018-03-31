@@ -226,7 +226,6 @@ export default {
         id: Math.random() * 1000 + 'iphone'
       })
       this.message = ''
-      console.log(msgData, this.msgTest, 2222)
       if (this.msgTest.sign === 'private') {
         debugger
         // 私聊
@@ -247,7 +246,6 @@ export default {
       this.$socket.emit('join', senddData)
     },
     setMessage (data) {
-      console.log(data, 123456)
       // 如果发送消息人或群 已经被打开，则直接加入聊天页数据
       if (data.userId === this.msgTest.toUserId) {
         this.msgTest.msgArr.push({
@@ -282,7 +280,6 @@ export default {
           toUserId: data.userId,
           roomId: data.roomId
         }
-        console.log(data, obj, 12333333)
         this.$set(this.messList, data.userId, obj)
         this.messNumber.push(data.userId)
       }
