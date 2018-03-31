@@ -80,7 +80,8 @@ export default {
     groupClick (item) {
       console.log(item)
       this.show = true
-      item.createData = new Date(item.createData).toLocaleString()
+      item.createDate = new Date(item.createDate).toLocaleString()
+      console.log(item)
       this.groupData = item
     },
     groupBack () {
