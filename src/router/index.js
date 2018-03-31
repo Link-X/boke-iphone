@@ -5,8 +5,10 @@ const NotFoundComponent = () => import('@/views/NotFoundComponent')
 const message = () => import('@/views/message')
 const friend = () => import('@/views/friend')
 const blog = () => import('@/views/blog')
-const activity = () => import('@/views/activity')
+const myPage = () => import('@/views/myPage')
 const addFriend = () => import('@/views/addFriend')
+const singUp = () => import('@/views/singUp')
+const roomlist = () => import('@/views/roomlist')
 Vue.use(Router)
 
 export default new Router({
@@ -19,10 +21,12 @@ export default new Router({
         { path: '/message', name: 'message', component: message },
         { path: '/friend', name: 'friend', component: friend },
         { path: '/blog', name: 'blog', component: blog },
-        { path: '/activity', name: 'activity', component: activity },
-        { path: '/addFriend', name: 'addFriend', component: addFriend }
+        { path: '/myPage', name: 'myPage', component: myPage },
+        { path: '/addFriend', name: 'addFriend', component: addFriend },
+        { path: '/roomlist', name: 'roomlist', component: roomlist }
       ]
     },
+    { path: '/singUp', name: 'singUp', component: singUp },
     {
       path: '*', component: NotFoundComponent
     }

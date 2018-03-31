@@ -155,7 +155,7 @@ input::-webkit-input-placeholder {
     <van-button class="login-from_submit" type="default" @click.native="submit">登录</van-button>
 
     <div class="login-singIn">
-      <van-button class="login-from_submit">立即注册</van-button>
+      <van-button class="login-from_submit" @click="singUp">立即注册</van-button>
     </div>
   </div>
 </template>
@@ -173,6 +173,15 @@ export default {
   },
   methods: {
     submit () {
+      let datas = {
+        iphone: '登陆账号',
+        password: '密码'
+      }
+      for (let i in this.from) {
+        if (!this.from[i]) {
+          this.$toast(`${datas[i]} 不能为空`)
+        }
+      }
       this.logIn(this.from).then(res => {
         if (res) {
           this.SET_ISLOTIN(true)
@@ -185,6 +194,11 @@ export default {
       })
       // this.SET_ISLOTIN(true)
       // this.SET_USER({userName: 'xu', userId: '1'})
+    },
+    singUp () {
+      this.$router.push({
+        path: '/singUp'
+      })
     },
     ...mapActions([
       'logIn'

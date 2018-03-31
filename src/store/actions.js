@@ -7,12 +7,15 @@ export default {
     return http.post('/user/getFriend', pageData)
   },
   getRoom ({ commit, state }, pageData) {
-    return http.post('/user/getFriend', pageData)
+    return http.post('/room/getRoom', pageData)
   },
   addFriend ({ commit, state }, pageData) {
     return http.post('/user/addFriend', pageData)
   },
   getFriendList ({ commit, state }, pageData) {
     return http.post('/user/friendList', pageData)
+  },
+  addUser ({ commit, state }, pageData) {
+    return http.post('/user/add', pageData)
   }
 }

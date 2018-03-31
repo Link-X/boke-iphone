@@ -7,5 +7,8 @@ export default {
   },
   SET_FRIEND (state, data) {
     state.friend = data
+  },
+  SET_GROUP (state, data) {
+    state.group = data
   }
 }

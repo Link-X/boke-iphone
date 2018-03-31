@@ -11,7 +11,8 @@ export default new Vuex.Store({
   state: {
     isLogin: false,
     user: {},
-    friend: {}
+    friend: {},
+    group: {}
   },
   getters,
   actions,

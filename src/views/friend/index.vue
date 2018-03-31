@@ -7,9 +7,9 @@
       </van-tab>
     </van-tabs>
     <Scroll class="scroll-item"
-      :data='friendLIst'>
+      :data='friendList'>
       <ul class="friend-list_ul">
-        <li v-for="item in friendLIst"
+        <li v-for="item in friendList"
           :key="item.friendId"
           @click="friendMess(item)">
           <div class="ul-li_img">
@@ -22,6 +22,9 @@
           </div>
         </li>
       </ul>
+      <div v-if="!friendList.length" class="friend-list_null">
+        没有好友，快去看看吧
+      </div>
     </Scroll>
   </div>
 </template>
@@ -34,23 +37,26 @@ export default {
   data () {
     return {
       active: 0,
-      friendLIst: []
+      friendList: []
     }
   },
   created () {
     this.getFriendList({ userId: this.user.userId }).then(data => {
       if (data.code === 200) {
-        this.friendLIst = data.data
+        this.friendList = data.data
       }
     })
   },
   methods: {
     friendMess (friend) {
+      // 进入好友资料讲resource的header对应改成好友的名字
       resource.header.addFriend = friend.friendUserName
+
       let data = {
         userNumber: friend.friendIphone
       }
       this.getFriend(data).then(data => {
+        // 获取好友资料
         this.SET_FRIEND(data.data[0])
         this.$router.push({
           path: '/addFriend',
@@ -59,7 +65,8 @@ export default {
       })
     },
     onClick (index, title) {
-      console.log(index, title)
+      let titles = ['friendList', 'groupList']
+      console.log(titles)
     },
     ...mapActions([
       'getFriendList',
@@ -116,5 +123,10 @@ export default {
 }
 .text-name {
   font-weight: bold;
+}
+.friend-list_null {
+  text-align: center;
+  color: #988b8b;
+  font-size: 14px;
 }
 </style>

@@ -38,8 +38,8 @@
       <van-tabbar-item icon="pending-orders">
         <span>博文</span>
       </van-tabbar-item>
-      <van-tabbar-item icon="edit">
-        <span>动态</span>
+      <van-tabbar-item icon="setting">
+        <span>我的</span>
       </van-tabbar-item>
     </van-tabbar>
     <van-popup v-model="addPoput"
@@ -48,7 +48,6 @@
       <h2 class="add-poput_title">请输入{{poputName}}</h2>
       <van-cell-group>
         <van-field v-model="userNumber"
-          type="number"
           :label="poputName + ':'"
           icon="clear"
           placeholder="请输入账号"
@@ -58,7 +57,11 @@
       <div class="poput-btn_box">
         <div class="btn-box_div">
           <van-button type="primary"
+            v-if="poputName === '好友账号'"
             @click="getAccount">查找</van-button>
+          <van-button type="primary"
+            v-else
+            @click="getGroup">查找</van-button>
           <van-button @click="addPoput = false">取消</van-button>
         </div>
       </div>
@@ -77,7 +80,7 @@ export default {
       userNumber: '1555555',
       addPoput: false,
       addSocket: false,
-      navData: ['message', 'friend', 'blog', 'activity']
+      navData: ['message', 'friend', 'blog', 'myPage']
     }
   },
   methods: {
@@ -92,28 +95,50 @@ export default {
       // console.log(event.path)
     },
     showWin (name) {
-      this.poputName = name === 'addFriend' ? '好友账号' : '群账号'
+      this.poputName = name === 'addFriend' ? '好友账号' : '群账号或群名称'
       this.addPoput = true
     },
     getAccount () {
       let data = {
-        userNumber: this.userNumber
+        iphone: this.userNumber
       }
-      let ajaxName = this.poputName === '好友账号' ? 'getFriend' : 'getRoom'
-      this[ajaxName](data).then(data => {
+      this.getFriend(data).then(data => {
         // 查找账号信息
-        if (!data.data.length) {
-          this.$toast.fail('该账号不存在哦')
+        let isNull = this.setData('SET_FRIEND', '添加好友', [data.data[0]])
+        console.log(isNull, 123)
+        if (isNull) {
           return
         }
-        this.addPoput = false
-        this.addSocket = false
-        resource.header.addFriend = '添加好友'
-        this.SET_FRIEND(data.data[0])
         this.$router.push({
           path: '/addFriend'
         })
       })
+    },
+    getGroup () {
+      let paramsData = {
+        roomName: this.userNumber
+      }
+      this.getRoom(paramsData).then(data => {
+        // 查找群
+        let isNull = this.setData('SET_GROUP', '添加群聊', [data.data])
+        if (isNull) {
+          return
+        }
+        this.$router.push({
+          path: '/roomlist'
+        })
+      })
+    },
+    setData (mutationsname, title, data) {
+      if (!data[0] || !data[0].length) {
+        this.$toast.fail(`无法${title}改账号不存在`)
+        return true
+      }
+      this.addPoput = false
+      this.addSocket = false
+      resource.header.addFriend = title
+      this.userNumber = ''
+      this[mutationsname](data[0])
     },
     tabChange (val) {
       this.$router.push({
@@ -124,7 +149,8 @@ export default {
       this.$router.back()
     },
     ...mapMutations([
-      'SET_FRIEND'
+      'SET_FRIEND',
+      'SET_GROUP'
     ]),
     ...mapActions([
       'getFriend',
@@ -136,7 +162,7 @@ export default {
       return resource.header[this.$route.name]
     },
     navVar () {
-      let data = ['消息', '好友', '博文', '动态']
+      let data = ['消息', '好友', '博文', '我的']
       return data.indexOf(this.headerTitle)
     }
   },
@@ -184,7 +210,7 @@ export default {
 
 .add-socket {
   position: absolute;
-  z-index: 2;
+  z-index: 112;
   width: 110px;
   right: 8px;
   top: 40px;
