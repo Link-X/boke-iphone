@@ -123,3 +123,10 @@ a:active {
   transition: all 0.2s;
   overflow: hidden;
 }
+
+.home-li_click {
+  background-color: #eae7e7 !important;
+}
+.van-cell-group {
+  background-color: transparent !important;
+}

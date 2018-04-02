@@ -9,7 +9,9 @@
     </van-tabs>
     <Scroll class="scroll-item"
       :data='friendList'>
-      <ul class="friend-list_ul">
+      <ul class="friend-list_ul"
+        @touchstart="touchDom($event, 'add')"
+        @touchend="touchDom($event, 'rem')">
         <li v-for="item in friendList"
           :key="item.friendId"
           @click="friendMess(item)">
@@ -35,6 +37,7 @@
 import resource from '@/utils/resource.json'
 import { mapActions, mapGetters, mapMutations } from 'vuex'
 import Scroll from '@/components/scroll.vue'
+import { touchDoms } from '@/utils/utils.js'
 export default {
   data () {
     return {
@@ -69,13 +72,16 @@ export default {
       })
     },
     onClick (index, title) {
-      let titles = ['friendList', 'groupList']
-      console.log(titles)
+      // let titles = ['friendList', 'groupList']
+      console.log(title)
     },
     ...mapActions([
       'getFriendList',
       'getFriend'
     ]),
+    touchDom (dom, type) {
+      touchDoms(dom, type)
+    },
     ...mapMutations([
       'SET_FRIEND'
     ])

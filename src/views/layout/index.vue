@@ -160,15 +160,18 @@ export default {
   },
   computed: {
     headerTitle () {
+      // 头部header文字
       return resource.header[this.$route.name]
     },
     navVar () {
+      // 判断是否一级页面
       let data = ['消息', '好友', '博文', '我的']
       return data.indexOf(this.headerTitle)
     }
   },
   watch: {
     headerTitle () {
+      // 路由跳转 van-nav-bar 组件对应 active
       this.active = this.navData.indexOf(this.$route.name)
       this.addSocket = false
     }

@@ -4,7 +4,9 @@
       class="message-scroll"
       @scroll='scroll'
       @scrollEnd='scrollEnd'>
-      <ul class="message-ul">
+      <ul class="message-ul"
+        @touchstart="touchDom($event, 'add')"
+        @touchend="touchDom($event, 'rem')">
         <li class="message-li"
           v-for="item in messList"
           :key="item.toUserId"
@@ -72,6 +74,7 @@
 <script>
 import { mapGetters, mapMutations } from 'vuex'
 import Scroll from '@/components/scroll.vue'
+import { touchDoms } from '@/utils/utils.js'
 export default {
   data () {
     return {
@@ -267,6 +270,7 @@ export default {
         })
         this.messList[data.userId].msgTitle = data.msg
       } else {
+        // 否则添加新对话
         let obj = {
           userName: data.sendName,
           msgTitle: data.msg,
@@ -303,6 +307,9 @@ export default {
     },
     scrollEnd () {
       console.log(1)
+    },
+    touchDom (dom, type) {
+      touchDoms(dom, type)
     },
     ...mapMutations([
       'SET_USER'

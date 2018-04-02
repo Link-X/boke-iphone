@@ -2,7 +2,9 @@
   <div class="room-list">
     <Scroll class="scroll-item"
       :data='group'>
-      <ul class="group-list_ul">
+      <ul class="group-list_ul"
+        @touchstart="touchDom($event, 'add')"
+        @touchend="touchDom($event, 'rem')">
         <li v-for="item in group"
           :key="item.id"
           @click="groupClick(item)">
@@ -53,16 +55,17 @@
         <div class="list-poput_btn">
           <van-button size='large'
             type="primary"
-            @click="addGroup">添加好友</van-button>
-          </div>
+            @click="addGroup">添加群聊</van-button>
         </div>
+      </div>
     </van-popup>
-    </div>
+  </div>
 </template>
 
 <script>
 import Scroll from '@/components/scroll.vue'
 import { mapGetters } from 'vuex'
+import { touchDoms } from '@/utils/utils.js'
 export default {
   data () {
     return {
@@ -87,6 +90,9 @@ export default {
     },
     addGroup () {
 
+    },
+    touchDom (dom, type) {
+      touchDoms(dom, type)
     }
   },
   computed: {
