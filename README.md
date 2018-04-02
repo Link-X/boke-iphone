@@ -6,11 +6,10 @@
 <br/>
 `nodeJs`提供接口： [node端github代码跳转：https://github.com/Link-X/nodeBoke](https://github.com/Link-X/nodeBoke "node 聊天、博客系统")
 <br/>
-<p
-  <img src="https://img.shields.io/badge/yarn-v1.5.1-brightgreen.svg" alt="License">
-  <img src="https://img.shields.io/badge/yarn-v1.5.1-brightgreen.svg" alt="License">
-  <img src="https://img.shields.io/badge/node-v8.10.0-brightgreen.svg" alt="License">
-  <img src="https://img.shields.io/badge/webpack-V3.6.0-brightgreen.svg" alt="License">
-  <img src="https://img.shields.io/badge/webpack-V3.6.0-brightgreen.svg" alt="License">
-  <img src="https://img.shields.io/badge/downloads-2.6MB-brightgreen.svg" alt="License">
+
+<p align="center">
+  <a href="/"><img src="https://img.shields.io/badge/yarn-v1.5.1-brightgreen.svg" alt="yarn"></a>
+  <a href="/"><img src="https://img.shields.io/badge/node-v8.10.0-brightgreen.svg" alt="node"></a>
+  <a href="/"><img src="https://img.shields.io/badge/downloads-2.6MB-brightgreen.svg" alt="Downloads"></a>
+  <a href="/"><img src="https://img.shields.io/badge/webpack-V3.6.0-brightgreen.svg" alt="webpack"></a>
 </p>
