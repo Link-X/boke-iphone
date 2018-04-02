@@ -184,6 +184,13 @@ export default {
   .van-nav-bar__title {
     color: #fff;
     background: linear-gradient(left, #2aacf9, #59d7f5);
+    background: -webkit-gradient(
+      linear,
+      left top,
+      right top,
+      from(#2aacf9),
+      to(#59d7f5)
+    );
   }
 
   .layout-add,

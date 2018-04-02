@@ -59,10 +59,7 @@
         <div class="message-win_send">
           <van-cell-group>
             <van-field v-model="message"
-              type="textarea"
-              placeholder="请输入留言"
-              rows="1"
-              autosize />
+              placeholder="请输入用户名" />
           </van-cell-group>
           <van-button @click="sendMessage">发送</van-button>
         </div>
@@ -230,7 +227,6 @@ export default {
       })
       this.message = ''
       if (this.msgTest.sign === 'private') {
-        debugger
         // 私聊
         this.$socket.emit('sendPrivateChat', msgData)
         return
@@ -329,6 +325,9 @@ export default {
 <style lang='less'>
 .van-field--has-textarea .van-field__control {
   max-height: 96px;
+}
+.van-field__control {
+  height: auto;
 }
 </style>
 
