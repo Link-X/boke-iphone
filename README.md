@@ -8,6 +8,7 @@
 <br/>
 <p
   <img src="https://img.shields.io/badge/yarn-v1.5.1-brightgreen.svg" alt="License">
+  <img src="https://img.shields.io/badge/yarn-v1.5.1-brightgreen.svg" alt="License">
   <img src="https://img.shields.io/badge/node-v8.10.0-brightgreen.svg" alt="License">
   <img src="https://img.shields.io/badge/webpack-V3.6.0-brightgreen.svg" alt="License">
   <img src="https://img.shields.io/badge/webpack-V3.6.0-brightgreen.svg" alt="License">
