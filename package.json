@@ -14,7 +14,7 @@
     "axios": "^0.18.0",
     "better-scroll": "^1.7.2",
     "moment": "^2.21.0",
-    "vant": "^0.12.14",
+    "vant": "^1.0.3",
     "vue": "^2.5.2",
     "vue-lazyload": "^1.2.2",
     "vue-router": "^3.0.1",
