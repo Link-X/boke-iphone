@@ -13,7 +13,7 @@ import VueSocketio from 'vue-socket.io'
 Vue.config.productionTip = false
 
 Vue.use(vant)
-Vue.use(VueSocketio, '0.0.0.0:5005')
+Vue.use(VueSocketio, 'http://127.0.0.1:5005')
 
 Vue.use(lazyLoad, {
   preLoad: 1.3,
