@@ -20,11 +20,11 @@
 # 安装依赖
 yarn
 
-# 开发模式
+# 启动开发调试模式
 
 yarn start
 
-# 打包
+# 打包上线
 
 yarn build
 
