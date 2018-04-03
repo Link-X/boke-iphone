@@ -40,9 +40,22 @@
             name="arrow-left"
             slot="left" />
         </van-nav-bar>
-        <div class="bbb">
-          <div class="aaa"></div>
-        </div>
+        <Scroll :data='msgTest.msgArr'
+          class="message-scroll">
+          <div class="message-win_center">
+            <div class="message-win_another"
+              v-for="item in msgTest.msgArr"
+              :key="item.id"
+              :class="{'message-win_my': item.sign === 'my'}">
+              <div class="message-win_img"
+                v-if="item.sign === 'he'"><img src="../../../static/toxiang.png" /></div>
+              <span class="message-win_text"
+                :class="{'message-win_text2' : item.sign === 'my'}">{{item.msg}}</span>
+              <div class="message-win_img message-win_myImg"
+                v-if="item.sign === 'my'"><img src="../../../static/toux2.jpg" /></div>
+            </div>
+          </div>
+        </Scroll>
         <div class="message-win_send">
           <van-cell-group>
             <van-field v-model="message"
@@ -342,17 +355,9 @@ export default {
 }
 
 .message-win_center {
-  height: 100%;
-  overflow-y: scroll;
   padding: 20px 15px 50px 15px;
 }
-.bbb {
-  height: 100%;
-  overflow-y: scroll;
-  .aaa{
-    height: 1000px;
-  }
-}
+
 .van-cell_center {
   height: 0.5rem;
   padding: 0.15rem;
