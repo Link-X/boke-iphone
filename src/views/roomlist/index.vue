@@ -64,7 +64,7 @@
 
 <script>
 import Scroll from '@/components/scroll.vue'
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 import { touchDoms } from '@/utils/utils.js'
 export default {
   data () {
@@ -89,15 +89,43 @@ export default {
       this.show = false
     },
     addGroup () {
-
+      let data = {
+        friendGroupName: this.groupData.roomName,
+        friendGroupId: this.groupData.id,
+        friendGroupImg: this.groupData.roomImg,
+        signature: this.groupData.signature,
+        addAccountName: this.user.userName,
+        addAccountId: this.user.userId
+      }
+      this.joinRoom(data).then(data => {
+        let jude = {
+          'add': () => {
+            this.$toast({
+              position: 'top',
+              message: '添加成功'
+            })
+          },
+          'exist': () => {
+            this.$toast({
+              position: 'top',
+              message: '你已经加入这个群聊啦'
+            })
+          }
+        }
+        jude[data.data.type]()
+      })
     },
     touchDom (dom, type) {
       touchDoms(dom, type)
-    }
+    },
+    ...mapActions([
+      'joinRoom'
+    ])
   },
   computed: {
     ...mapGetters([
-      'group'
+      'group',
+      'user'
     ])
   },
   components: {

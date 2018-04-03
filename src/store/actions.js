@@ -17,5 +17,14 @@ export default {
   },
   addUser ({ commit, state }, pageData) {
     return http.post('/user/add', pageData)
+  },
+  joinRoom ({ commit, state }, pageData) {
+    return http.post('/room/joinRoom', pageData)
+  },
+  getGroupList ({ commit, state }, pageData) {
+    return http.post('/room/groupList', pageData)
+  },
+  getGroupData ({ commit, state }, pageData) {
+    return http.post('/room/getGroupData', pageData)
   }
 }

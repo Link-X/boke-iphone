@@ -8,6 +8,7 @@
       </van-tab>
     </van-tabs>
     <Scroll class="scroll-item"
+      v-show="isList === 'getFriendList'"
       :data='friendList'>
       <ul class="friend-list_ul"
         @touchstart="touchDom($event, 'add')"
@@ -30,6 +31,30 @@
         没有好友，快去看看吧
       </div>
     </Scroll>
+    <Scroll class="scroll-item"
+      v-show="isList === 'getGroupList'"
+      :data='groupList'>
+      <ul class="friend-list_ul"
+        @touchstart="touchDom($event, 'add')"
+        @touchend="touchDom($event, 'rem')">
+        <li v-for="item in groupList"
+          :key="item.id"
+          @click="groupMsg(item)">
+          <div class="ul-li_img">
+            <img :src="item.friendGroupImg"
+              alt="">
+          </div>
+          <div class="ul-li_text">
+            <div class="text-name">{{item.friendGroupName}}</div>
+            <div class="text-signature">{{item.signature}}</div>
+          </div>
+        </li>
+      </ul>
+      <div v-if="!groupList.length"
+        class="friend-list_null">
+        没有群聊，快去看看吧
+      </div>
+    </Scroll>
   </div>
 </template>
 
@@ -42,15 +67,13 @@ export default {
   data () {
     return {
       active: 0,
-      friendList: []
+      friendList: [],
+      groupList: [],
+      isList: 'getFriendList'
     }
   },
   created () {
-    this.getFriendList({ userId: this.user.userId }).then(data => {
-      if (data.code === 200) {
-        this.friendList = data.data
-      }
-    })
+    this.getData()
   },
   methods: {
     friendMess (friend) {
@@ -71,19 +94,55 @@ export default {
         })
       })
     },
+    groupMsg (group) {
+      resource.header.addFriend = group.friendGroupName
+      let data = {
+        id: group.addAccountId
+      }
+      this.getGroupData(data).then(data => {
+        this.SET_GROUP(data.data)
+        this.$router.push({
+          path: '/roomlist',
+          query: {
+            roomId: group.friendGroupId
+          }
+        })
+      })
+    },
     onClick (index, title) {
-      // let titles = ['friendList', 'groupList']
-      console.log(title)
+      let titles = ['getFriendList', 'getGroupList']
+      this.isList = titles[index]
+    },
+    getData () {
+      this.pageGetFriendList()
+      this.pageGetGroupList()
+    },
+    pageGetFriendList () {
+      this.getFriendList({ userId: this.user.userId }).then(data => {
+        if (data.code === 200) {
+          this.friendList = data.data
+        }
+      })
+    },
+    pageGetGroupList () {
+      this.getGroupList({ addAccountId: this.user.userId }).then(data => {
+        if (data.code === 200) {
+          this.groupList = data.data
+        }
+      })
     },
     ...mapActions([
       'getFriendList',
-      'getFriend'
+      'getFriend',
+      'getGroupList',
+      'getGroupData'
     ]),
     touchDom (dom, type) {
       touchDoms(dom, type)
     },
     ...mapMutations([
-      'SET_FRIEND'
+      'SET_FRIEND',
+      'SET_GROUP'
     ])
   },
   computed: {

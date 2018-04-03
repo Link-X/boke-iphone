@@ -40,22 +40,9 @@
             name="arrow-left"
             slot="left" />
         </van-nav-bar>
-        <Scroll :data='msgTest.msgArr'
-          class="message-scroll">
-          <div class="message-win_center">
-            <div class="message-win_another"
-              v-for="item in msgTest.msgArr"
-              :key="item.id"
-              :class="{'message-win_my': item.sign === 'my'}">
-              <div class="message-win_img"
-                v-if="item.sign === 'he'"><img src="../../../static/toxiang.png" /></div>
-              <span class="message-win_text"
-                :class="{'message-win_text2' : item.sign === 'my'}">{{item.msg}}</span>
-              <div class="message-win_img message-win_myImg"
-                v-if="item.sign === 'my'"><img src="../../../static/toux2.jpg" /></div>
-            </div>
-          </div>
-        </Scroll>
+        <div class="bbb">
+          <div class="aaa"></div>
+        </div>
         <div class="message-win_send">
           <van-cell-group>
             <van-field v-model="message"
@@ -141,6 +128,12 @@ export default {
       // 群消息
       console.log(data, '群消息来啦')
       this.setMessage(data)
+    },
+    accountExit (data) {
+      console.log(data)
+      if (this.msgTest.toUserId === data.toUserId) {
+        console.log(1)
+      }
     }
   },
   created () {
@@ -195,6 +188,7 @@ export default {
           this.messList[v].msgArr = []
           this.messList[v].msgArr = this.msgTest.msgArr.concat([])
           if (this.msgTest.msgArr.length) {
+            // 列表显示最后一条聊天记录
             this.messList[v].msgTitle = this.msgTest.msgArr[this.msgTest.msgArr.length - 1].msg
           }
         }
@@ -220,14 +214,15 @@ export default {
         toUserId: this.msgTest.toUserId,
         roomId: this.msgTest.toUserId
       }
+      // 消息加入对应聊天记录
       this.msgTest.msgArr.push({
         msg: this.message,
         sign: 'my',
         id: Math.random() * 1000 + 'iphone'
       })
       this.message = ''
+      // 是否私聊私聊
       if (this.msgTest.sign === 'private') {
-        // 私聊
         this.$socket.emit('sendPrivateChat', msgData)
         return
       }
@@ -237,7 +232,7 @@ export default {
       this.$socket.emit('sendRoomChat', msgData)
     },
     enterRoom (data) {
-      // 加入群聊
+      // 加入群聊房间
       let senddData = {
         roomId: data.roomId,
         userName: data.userName
@@ -266,7 +261,7 @@ export default {
         })
         this.messList[data.userId].msgTitle = data.msg
       } else {
-        // 否则添加新对话
+        // 添加新对话列表
         let obj = {
           userName: data.sendName,
           msgTitle: data.msg,
@@ -294,9 +289,6 @@ export default {
           this.enterRoom(data)
         }
       }
-    },
-    sendRoomChat () {
-      this.$socket.emit('sendRoomChat', { roomId: 123, msg: `我是${this.user.userName}` })
     },
     scroll (pos) {
       console.log(pos)
@@ -350,9 +342,17 @@ export default {
 }
 
 .message-win_center {
+  height: 100%;
+  overflow-y: scroll;
   padding: 20px 15px 50px 15px;
 }
-
+.bbb {
+  height: 100%;
+  overflow-y: scroll;
+  .aaa{
+    height: 1000px;
+  }
+}
 .van-cell_center {
   height: 0.5rem;
   padding: 0.15rem;
