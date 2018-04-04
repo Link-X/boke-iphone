@@ -11,7 +11,7 @@
 
 ![私聊](https://miao.su/images/2018/04/04/chat96f0b.gif)
 
-![私聊](https://miao.su/images/2018/04/04/groupChat0d9a1.gif)
+![群聊](https://miao.su/images/2018/04/04/groupChat0d9a1.gif)
 
 `nodeJs`提供接口： [node端github代码跳转：https://github.com/Link-X/nodeBoke](https://github.com/Link-X/nodeBoke "node 聊天、博客系统")
 <br/>
