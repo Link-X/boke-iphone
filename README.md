@@ -7,12 +7,6 @@
 已实现（私聊，群聊，加好友，加群聊）
 未实现（发送、删除、修改博文、评论博文）
 
-![登陆](https://miao.su/images/2018/04/04/singInac529.gif)
-
-![私聊](https://miao.su/images/2018/04/04/chat96f0b.gif)
-
-![群聊](https://miao.su/images/2018/04/04/groupChat0d9a1.gif)
-
 `nodeJs`提供接口： [node端github代码跳转：https://github.com/Link-X/nodeBoke](https://github.com/Link-X/nodeBoke "node 聊天、博客系统")
 <br/>
 
@@ -23,6 +17,12 @@
   <a href="https://github.com/Link-X/boke-iphone"><img src="https://img.shields.io/badge/webpack-V3.6.0-brightgreen.svg" alt="webpack"></a>
   <a href="https://github.com/Link-X/boke-iphone"><img src="https://img.shields.io/badge/downloads-2.6MB-brightgreen.svg" alt="Downloads"></a>
 </p>
+
+![登陆](https://miao.su/images/2018/04/04/singInac529.gif)
+
+![私聊](https://miao.su/images/2018/04/04/chat96f0b.gif)
+
+![群聊](https://miao.su/images/2018/04/04/groupChat0d9a1.gif)
 
 ##安装
 ``` bash
