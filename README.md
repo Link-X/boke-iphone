@@ -2,8 +2,17 @@
 > 个人博客和私人聊天
 
 一个基于websocket协议的绿色聊天，项目使用框架<br/>
-`vue v2.5x`、`vue-router v3.0.x`、`vuex v3.0x`、`vant v1.0x`、`axios v0.18.x`、`vue-socket.io v2.1.1-b`....
-<br/><br/><br/>
+`vue全家桶`、`vant`、`axios`、`vue-socket.io`、`better-scroll`....
+<br/>
+已实现（私聊，群聊，加好友，加群聊）
+未实现（发送、删除、修改博文、评论博文）
+
+![登陆](https://miao.su/images/2018/04/04/singInac529.gif)
+
+![私聊](https://miao.su/images/2018/04/04/chat96f0b.gif)
+
+![私聊](https://miao.su/images/2018/04/04/groupChat0d9a1.gif)
+
 `nodeJs`提供接口： [node端github代码跳转：https://github.com/Link-X/nodeBoke](https://github.com/Link-X/nodeBoke "node 聊天、博客系统")
 <br/>
 

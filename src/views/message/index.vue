@@ -59,7 +59,7 @@
         <div class="message-win_send">
           <van-cell-group>
             <van-field v-model="message"
-              placeholder="请输入用户名" />
+              placeholder="想说啥" />
           </van-cell-group>
           <van-button @click="sendMessage">发送</van-button>
         </div>
@@ -79,7 +79,7 @@ export default {
       message: '',
       messList: {
         '2': {
-          userName: '许道斌',
+          userName: '许兄',
           msgTitle: '今晚去哪吃',
           msgArr: [],
           sign: 'private',
@@ -355,6 +355,7 @@ export default {
 }
 
 .message-win_center {
+  position: relative;
   padding: 20px 15px 50px 15px;
 }
 
