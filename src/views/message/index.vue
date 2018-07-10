@@ -1,16 +1,15 @@
 <template>
   <div class="message">
     <Scroll :data='messNumber'
-      class="message-scroll"
-      @scroll='scroll'
-      @scrollEnd='scrollEnd'>
+            ref="scrollTwoOne"
+            class="message-scroll">
       <ul class="message-ul"
-        @touchstart="touchDom($event, 'add')"
-        @touchend="touchDom($event, 'rem')">
+          @touchstart="touchDom($event, 'add')"
+          @touchend="touchDom($event, 'rem')">
         <li class="message-li"
-          v-for="item in messList"
-          :key="item.toUserId"
-          @click="showMsgWin(item.toUserId)">
+            v-for="item in messList"
+            :key="item.toUserId"
+            @click="showMsgWin(item.toUserId)">
           <van-cell-swipe :right-width="65">
             <van-cell-group>
               <div class="van-cell_center">
@@ -25,41 +24,44 @@
               </div>
             </van-cell-group>
             <span class="van-cell_right"
-              slot="right">删除</span>
+                  slot="right">删除</span>
           </van-cell-swipe>
         </li>
       </ul>
     </Scroll>
     <van-popup v-model="msgWin"
-      position="right"
-      :overlay="false">
+               position="right"
+               :overlay="false">
       <div class="message-win">
         <van-nav-bar :title="msgTest.userName"
-          @click-left="msgWinClose">
+                     @click-left="msgWinClose">
           <van-icon class="layout-return"
-            name="arrow-left"
-            slot="left" />
+                    name="arrow-left"
+                    slot="left" />
         </van-nav-bar>
         <Scroll :data='msgTest.msgArr'
-          class="message-scroll">
+                ref="scrollTwo"
+                @scroll='scroll'
+                @scrollEnd='scrollEnd'
+                class="message-scroll2">
           <div class="message-win_center">
             <div class="message-win_another"
-              v-for="item in msgTest.msgArr"
-              :key="item.id"
-              :class="{'message-win_my': item.sign === 'my'}">
+                 v-for="item in msgTest.msgArr"
+                 :key="item.id"
+                 :class="{'message-win_my': item.sign === 'my'}">
               <div class="message-win_img"
-                v-if="item.sign === 'he'"><img src="../../../static/toxiang.png" /></div>
+                   v-if="item.sign === 'he'"><img src="../../../static/toxiang.png" /></div>
               <span class="message-win_text"
-                :class="{'message-win_text2' : item.sign === 'my'}">{{item.msg}}</span>
+                    :class="{'message-win_text2' : item.sign === 'my'}">{{item.msg}}</span>
               <div class="message-win_img message-win_myImg"
-                v-if="item.sign === 'my'"><img src="../../../static/toux2.jpg" /></div>
+                   v-if="item.sign === 'my'"><img src="../../../static/toux2.jpg" /></div>
             </div>
           </div>
         </Scroll>
         <div class="message-win_send">
           <van-cell-group>
             <van-field v-model="message"
-              placeholder="想说啥" />
+                       placeholder="想说啥" />
           </van-cell-group>
           <van-button @click="sendMessage">发送</van-button>
         </div>
@@ -69,408 +71,433 @@
 </template>
 
 <script>
-import { mapGetters, mapMutations } from 'vuex'
-import Scroll from '@/components/scroll.vue'
-import { touchDoms } from '@/utils/utils.js'
-export default {
-  data () {
-    return {
-      msgWin: false,
-      message: '',
-      messList: {
-        '2': {
-          userName: '许兄',
-          msgTitle: '今晚去哪吃',
-          msgArr: [],
-          sign: 'private',
-          userImg: 'http://pic29.photophoto.cn/20131204/0034034499213463_b.jpg',
-          date: '15:30',
-          toUserId: '2'
+  import { mapGetters, mapMutations } from 'vuex'
+  import { time } from '@/utils/filter.js'
+  import Scroll from '@/components/scroll.vue'
+  import { touchDoms } from '@/utils/utils.js'
+  export default {
+    data () {
+      return {
+        msgWin: false,
+        message: '',
+        messList: {
+          '2': {
+            userName: '许兄',
+            msgTitle: '今晚去哪吃',
+            msgArr: [],
+            sign: 'private',
+            userImg: 'http://pic29.photophoto.cn/20131204/0034034499213463_b.jpg',
+            date: '15:30',
+            toUserId: '2'
+          },
+          '1': {
+            userName: 'xu',
+            msgTitle: '',
+            msgArr: [],
+            userImg: 'http://f2.topitme.com/2/b9/71/112660598401871b92l.jpg',
+            sign: 'private',
+            date: '15:30',
+            toUserId: '1'
+          },
+          '123': {
+            userName: '系统群',
+            msgTitle: '',
+            msgArr: [],
+            sign: 'room',
+            userImg: '../../../static/toxiang.png',
+            date: '15:30',
+            toUserId: '123'
+          },
+          '1234': {
+            userName: '系统群2',
+            msgTitle: '',
+            msgArr: [],
+            userImg: '../../../static/toxiang.png',
+            sign: 'room',
+            date: '15:30',
+            toUserId: '1234'
+          }
         },
-        '1': {
-          userName: 'xu',
-          msgTitle: '',
-          msgArr: [],
-          userImg: 'http://f2.topitme.com/2/b9/71/112660598401871b92l.jpg',
-          sign: 'private',
-          date: '15:30',
-          toUserId: '1'
+        msgTest: {
+          msgArr: []
         },
-        '123': {
-          userName: '系统群',
-          msgTitle: '',
-          msgArr: [],
-          sign: 'room',
-          userImg: '../../../static/toxiang.png',
-          date: '15:30',
-          toUserId: '123'
-        },
-        '1234': {
-          userName: '系统群2',
-          msgTitle: '',
-          msgArr: [],
-          userImg: '../../../static/toxiang.png',
-          sign: 'room',
-          date: '15:30',
-          toUserId: '1234'
-        }
-      },
-      msgTest: {},
-      messNumber: []
-    }
-  },
-  sockets: {
-    connect: () => {
-      console.log(this.$socket)
+        messNumber: []
+      }
     },
-    yesEnter (data) {
-      this.SET_USER({
+    sockets: {
+      connect: () => {
+        console.log(this.$socket)
+      },
+      yesEnter (data) {
+        this.SET_USER({
+          userName: this.user.userName,
+          userId: this.user.userId
+        })
+      },
+      sys (data) {
+        console.log(data)
+      },
+      privatChat (data) {
+        // 监听私聊信息
+        console.log(data, '来消息啦')
+        this.setMessage(data)
+      },
+      roomMessage (data) {
+        // 群消息
+        console.log(data, '群消息来啦')
+        this.setMessage(data)
+      },
+      accountExit (data) {
+        console.log(data)
+        if (this.msgTest.toUserId === data.toUserId) {
+          console.log(1)
+        }
+      }
+    },
+    created () {
+      let data = {
         userName: this.user.userName,
         userId: this.user.userId
-      })
-    },
-    sys (data) {
-      console.log(data)
-    },
-    privatChat (data) {
-      // 监听私聊信息
-      console.log(data, '来消息啦')
-      this.setMessage(data)
-    },
-    roomMessage (data) {
-      // 群消息
-      console.log(data, '群消息来啦')
-      this.setMessage(data)
-    },
-    accountExit (data) {
-      console.log(data)
-      if (this.msgTest.toUserId === data.toUserId) {
-        console.log(1)
       }
-    }
-  },
-  created () {
-    let data = {
-      userName: this.user.userName,
-      userId: this.user.userId
-    }
-    this.messNumber = Object.keys(this.messList)
-    // 加入socket
-    this.$socket.emit('newUser', data)
-    this.pageCome()
-    // 自动加入2个系统群
-    this.enterStatemRoom()
-  },
-  methods: {
-    pageCome () {
-      // 从别的页面进入聊天，打开聊天
-      if (this.$route.query.id) {
-        this.$set(this.messList, this.$route.query.id, {
-          userName: this.$route.query.name,
-          msgTitle: '',
-          msgArr: [],
-          sign: this.$route.query.sign,
-          userImg: this.$route.query.userImg,
-          date: '15:30',
-          toUserId: this.$route.query.id
-        })
-        this.showMsgWin(this.$route.query.id)
-      }
+      this.messNumber = Object.keys(this.messList)
+      // 加入socket
+      this.$socket.emit('newUser', data)
+      this.pageCome()
+      // 自动加入2个系统群
+      this.enterStatemRoom()
     },
-    showMsgWin (toUserId) {
-      // 打开聊天窗口
-      for (let v in this.messList) {
-        if (v === toUserId) {
-          this.msgTest = JSON.parse(JSON.stringify(this.messList[v]))
+    methods: {
+      pageCome () {
+        // 从别的页面进入聊天，打开聊天
+        if (this.$route.query.id) {
+          this.$set(this.messList, this.$route.query.id, {
+            userName: this.$route.query.name,
+            msgTitle: '',
+            msgArr: [],
+            sign: this.$route.query.sign,
+            userImg: this.$route.query.userImg,
+            date: time(new Date()),
+            toUserId: this.$route.query.id
+          })
+          this.showMsgWin(this.$route.query.id)
         }
-      }
-      if (this.msgTest.sign === 'room') {
-        // 群聊茶窗口
-        let data = {
-          userName: this.user.userName,
-          roomId: this.msgTest.toUserId
-        }
-        this.enterRoom(data)
-      }
-      this.msgWin = true
-    },
-    msgWinClose () {
-      // 关闭聊天窗口
-      for (let v in this.messList) {
-        if (v === this.msgTest.toUserId) {
-          this.messList[v].msgArr = []
-          this.messList[v].msgArr = this.msgTest.msgArr.concat([])
-          if (this.msgTest.msgArr.length) {
-            // 列表显示最后一条聊天记录
-            this.messList[v].msgTitle = this.msgTest.msgArr[this.msgTest.msgArr.length - 1].msg
+      },
+      showMsgWin (toUserId) {
+        // 打开聊天窗口
+        for (let v in this.messList) {
+          if (v === toUserId) {
+            this.msgTest = JSON.parse(JSON.stringify(this.messList[v]))
           }
         }
-      }
-      this.msgTest = {
-        userName: '',
-        msgTitle: '',
-        msgArr: [],
-        sign: '',
-        date: '',
-        toUserId: ''
-      }
-      this.msgWin = false
-    },
-    sendMessage () {
-      // 发送消息
-      let msgData = {
-        userName: this.msgTest.userName,
-        sendName: this.user.userName,
-        msg: this.message,
-        sign: this.msgTest.sign,
-        userId: this.user.userId,
-        toUserId: this.msgTest.toUserId,
-        roomId: this.msgTest.toUserId
-      }
-      // 消息加入对应聊天记录
-      this.msgTest.msgArr.push({
-        msg: this.message,
-        sign: 'my',
-        id: Math.random() * 1000 + 'iphone'
-      })
-      this.message = ''
-      // 是否私聊私聊
-      if (this.msgTest.sign === 'private') {
-        this.$socket.emit('sendPrivateChat', msgData)
-        return
-      }
-      // 群聊
-      msgData.sign = 'room'
-      msgData.userId = this.msgTest.toUserId
-      this.$socket.emit('sendRoomChat', msgData)
-    },
-    enterRoom (data) {
-      // 加入群聊房间
-      let senddData = {
-        roomId: data.roomId,
-        userName: data.userName
-      }
-      this.$socket.emit('join', senddData)
-    },
-    setMessage (data) {
-      // 如果发送消息人或群 已经被打开，则直接加入聊天页数据
-      if (data.userId === this.msgTest.toUserId) {
-        this.msgTest.msgArr.push({
-          msg: data.msg,
-          sign: 'he',
-          id: Math.random() * 1000 + 'iphone'
-        })
-        this.msgTest.date = data.date
-        this.messList[data.userId].msgTitle = data.msg
-        return
-      }
-
-      // 如果消息有记录则 直接加入聊天记录
-      if (this.messList[data.userId]) {
-        this.messList[data.userId].msgArr.push({
-          msg: data.msg,
-          sign: 'he',
-          id: Math.random() * 1000 + 'iphone'
-        })
-        this.messList[data.userId].msgTitle = data.msg
-      } else {
-        // 添加新对话列表
-        let obj = {
-          userName: data.sendName,
-          msgTitle: data.msg,
-          msgArr: [{
-            msg: data.msg,
-            sign: 'he',
-            id: Math.random() * 1000 + 'iphone'
-          }],
-          sign: data.sign,
-          date: '15:30',
-          toUserId: data.userId,
-          roomId: data.roomId
-        }
-        this.$set(this.messList, data.userId, obj)
-        this.messNumber.push(data.userId)
-      }
-    },
-    enterStatemRoom () {
-      for (let i in this.messList) {
-        if (this.messList[i].sign === 'room') {
+        if (this.msgTest.sign === 'room') {
+          // 群聊茶窗口
           let data = {
-            roomId: this.messList[i].toUserId,
-            userName: this.user.userName
+            userName: this.user.userName,
+            roomId: this.msgTest.toUserId
           }
           this.enterRoom(data)
         }
-      }
+        this.msgWin = true
+        this.$nextTick(() => {
+          this.$refs.scrollTwo.initScroll()
+        })
+      },
+      msgWinClose () {
+        // 关闭聊天窗口
+        Object.keys(this.messList).forEach(v => {
+          if (v === this.msgTest.toUserId) {
+            this.messList[v].msgArr = []
+            this.messList[v].msgArr = this.msgTest.msgArr.concat([])
+            const len = this.msgTest.msgArr.length
+            if (len) {
+              // 列表显示最后一条聊天记录
+              this.messList[v].msgTitle = this.msgTest.msgArr[len - 1].msg
+              this.messList[v].date = this.msgTest.date
+            }
+          }
+        })
+        this.msgTest = {
+          userName: '',
+          msgTitle: '',
+          msgArr: [],
+          sign: '',
+          date: '',
+          toUserId: ''
+        }
+        this.msgWin = false
+      },
+      sendMessage () {
+        // 发送消息
+        let msgData = {
+          userName: this.msgTest.userName,
+          sendName: this.user.userName,
+          msg: this.message,
+          sign: this.msgTest.sign,
+          userId: this.user.userId,
+          toUserId: this.msgTest.toUserId,
+          roomId: this.msgTest.toUserId
+        }
+        // 消息加入对应聊天记录
+        this.msgTest.msgArr.push({
+          msg: this.message,
+          sign: 'my',
+          id: Math.random() * 1000 + 'iphone'
+        })
+        this.msgTest.date = time(new Date())
+        this.message = ''
+        // 是否私聊私聊
+        if (this.msgTest.sign === 'private') {
+          this.$socket.emit('sendPrivateChat', msgData)
+          return
+        }
+        // 群聊
+        msgData.sign = 'room'
+        msgData.userId = this.msgTest.toUserId
+        this.$socket.emit('sendRoomChat', msgData)
+      },
+      enterRoom (data) {
+        // 加入群聊房间
+        let senddData = {
+          roomId: data.roomId,
+          userName: data.userName
+        }
+        this.$socket.emit('join', senddData)
+      },
+      setMessage (data) {
+        // 如果发送消息人或群 已经被打开，则直接加入聊天页数据
+        if (data.userId === this.msgTest.toUserId) {
+          this.msgTest.msgArr.push({
+            msg: data.msg,
+            sign: 'he',
+            id: Math.random() * 1000 + 'iphone'
+          })
+          this.msgTest.date = data.date
+          this.messList[data.userId].msgTitle = data.msg
+          console.log(this.$refs.scrollTwo.scroll, 1)
+          return
+        }
+
+        // 如果消息有记录则 直接加入聊天记录
+        if (this.messList[data.userId]) {
+          this.messList[data.userId].msgArr.push({
+            msg: data.msg,
+            sign: 'he',
+            id: Math.random() * 1000 + 'iphone'
+          })
+          this.messList[data.userId].msgTitle = data.msg
+          this.messList[data.userId].date = data.date
+        } else {
+          // 添加新对话列表
+          let obj = {
+            userName: data.sendName,
+            msgTitle: data.msg,
+            msgArr: [{
+              msg: data.msg,
+              sign: 'he',
+              id: Math.random() * 1000 + 'iphone'
+            }],
+            sign: data.sign,
+            date: data.date,
+            toUserId: data.userId,
+            roomId: data.roomId
+          }
+          this.$set(this.messList, data.userId, obj)
+          this.messNumber.push(data.userId)
+        }
+      },
+      enterStatemRoom () {
+        Object.keys(this.messList).forEach(i => {
+          if (this.messList[i].sign === 'room') {
+            let data = {
+              roomId: this.messList[i].toUserId,
+              userName: this.user.userName
+            }
+            this.enterRoom(data)
+          }
+        })
+      },
+      scroll (pos) {
+        console.log(pos)
+      },
+      scrollEnd () {
+        console.log(1)
+      },
+      touchDom (dom, type) {
+        touchDoms(dom, type)
+      },
+      ...mapMutations([
+        'SET_USER'
+      ])
     },
-    scroll (pos) {
-      console.log(pos)
+    computed: {
+      ...mapGetters([
+        'user'
+      ])
     },
-    scrollEnd () {
-      console.log(1)
-    },
-    touchDom (dom, type) {
-      touchDoms(dom, type)
-    },
-    ...mapMutations([
-      'SET_USER'
-    ])
-  },
-  computed: {
-    ...mapGetters([
-      'user'
-    ])
-  },
-  components: {
-    Scroll
+    components: {
+      Scroll
+    }
   }
-}
 </script>
 
 <style lang='less'>
-.van-field--has-textarea .van-field__control {
-  max-height: 96px;
-}
-.van-field__control {
-  height: auto;
-}
+  .van-field--has-textarea .van-field__control {
+    max-height: 96px;
+  }
+  .van-field__control {
+    height: auto;
+  }
+  .van-nav-bar__title {
+    max-width: 100%;
+  }
 </style>
 
 <style lang='less' scoped>
-.van-cell_right {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 65px;
-  height: 100%;
-  font-size: 0.16rem;
-  background-color: red;
-  color: #fff;
-}
+  .van-cell_right {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 65px;
+    height: 100%;
+    font-size: 0.16rem;
+    background-color: red;
+    color: #fff;
+  }
 
-.message-win,
-.van-popup--right {
-  width: 100%;
-  height: 100%;
-}
+  .message-win,
+  .van-popup--right {
+    width: 100%;
+    height: 100%;
+  }
+  .message-win {
+    position: relative;
+  }
+  .message-win_center {
+    position: relative;
+    padding: 20px 15px 50px 15px;
+  }
 
-.message-win_center {
-  position: relative;
-  padding: 20px 15px 50px 15px;
-}
-
-.van-cell_center {
-  height: 0.5rem;
-  padding: 0.15rem;
-  display: flex;
-  align-items: center;
-  position: relative;
-  overflow: hidden;
-  .cell-center_img {
-    width: 0.5rem;
+  .van-cell_center {
     height: 0.5rem;
+    padding: 0.15rem;
+    display: flex;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+    .cell-center_img {
+      width: 0.5rem;
+      height: 0.5rem;
+      border-radius: 50%;
+      overflow: hidden;
+      margin-right: 0.15rem;
+      img {
+        width: 100%;
+        height: 100%;
+      }
+    }
+  }
+
+  .message-ul {
+    position: relative;
+    padding-bottom: 55px;
+  }
+
+  .cell-center_text {
+    line-height: 0.25rem;
+    width: 65%;
+    .center-text_title {
+      font-weight: bold;
+      font-size: 0.16rem;
+    }
+    div {
+      width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+  }
+
+  .cell-center_time {
+    position: absolute;
+    right: 0.1rem;
+    color: #756a6a;
+  }
+
+  .message-scroll {
+    position: fixed;
+    top: 46px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+    transition: all 0.2s;
+    overflow: hidden;
+  }
+  .message-scroll2 {
+    position: fixed;
+    top: 46px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+    transition: all 0.2s;
+    overflow: hidden;
+  }
+  .message-win_my {
+    justify-content: flex-end; // flex-direction: row-reverse
+  }
+
+  .message-win_another {
+    display: flex;
+    align-items: center;
+    flex-wrap: row-reverse;
+    margin-bottom: 10px;
+  }
+
+  .message-win_img {
+    width: 0.4rem;
+    height: 0.4rem;
     border-radius: 50%;
     overflow: hidden;
-    margin-right: 0.15rem;
     img {
       width: 100%;
       height: 100%;
     }
   }
-}
 
-.message-ul {
-  position: relative;
-  padding-bottom: 55px;
-}
-
-.cell-center_text {
-  line-height: 0.25rem;
-  width: 65%;
-  .center-text_title {
-    font-weight: bold;
-    font-size: 0.16rem;
+  .message-win_text {
+    display: inline-block;
+    max-width: 284px;
+    padding: 6px;
+    margin-left: 5px;
+    background-color: rgb(229, 229, 229);
+    word-break: break-all;
+    white-space: pre-wrap;
+    border-radius: 5px;
+    box-shadow: 2px 2px 2px #ddd;
   }
-  div {
+
+  .message-win_myImg {
+    margin-left: 5px;
+  }
+
+  .message-win_text2 {
+    background-color: rgb(18, 183, 245);
+    box-shadow: 2px 2px 2px #c7c3c3;
+  }
+
+  .message-win_send {
+    position: fixed;
+    bottom: 0;
     width: 100%;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+    max-height: 116px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-top: 1px solid #ddd;
+    background-color: #fff;
+    .van-cell-group {
+      flex-grow: 1;
+    }
   }
-}
-
-.cell-center_time {
-  position: absolute;
-  right: 0.1rem;
-  color: #756a6a;
-}
-
-.message-scroll {
-  position: fixed;
-  top: 46px;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  margin: auto;
-  transition: all 0.2s;
-  overflow: hidden;
-}
-
-.message-win_my {
-  justify-content: flex-end; // flex-direction: row-reverse
-}
-
-.message-win_another {
-  display: flex;
-  align-items: center;
-  flex-wrap: row-reverse;
-  margin-bottom: 10px;
-}
-
-.message-win_img {
-  width: 0.4rem;
-  height: 0.4rem;
-  border-radius: 50%;
-  overflow: hidden;
-  img {
-    width: 100%;
-    height: 100%;
-  }
-}
-
-.message-win_text {
-  display: inline-block;
-  max-width: 284px;
-  padding: 6px;
-  margin-left: 5px;
-  background-color: rgb(229, 229, 229);
-  word-break: break-all;
-  white-space: pre-wrap;
-  border-radius: 5px;
-  box-shadow: 2px 2px 2px #ddd;
-}
-
-.message-win_myImg {
-  margin-left: 5px;
-}
-
-.message-win_text2 {
-  background-color: rgb(18, 183, 245);
-  box-shadow: 2px 2px 2px #c7c3c3;
-}
-
-.message-win_send {
-  position: fixed;
-  bottom: 0;
-  width: 100%;
-  max-height: 116px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  border-top: 1px solid #ddd;
-  background-color: #fff;
-  .van-cell-group {
-    flex-grow: 1;
-  }
-}
 </style>

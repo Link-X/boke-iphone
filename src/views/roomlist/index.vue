@@ -1,16 +1,16 @@
 <template>
   <div class="room-list">
     <Scroll class="scroll-item"
-      :data='group'>
+            :data='group'>
       <ul class="group-list_ul"
-        @touchstart="touchDom($event, 'add')"
-        @touchend="touchDom($event, 'rem')">
+          @touchstart="touchDom($event, 'add')"
+          @touchend="touchDom($event, 'rem')">
         <li v-for="item in group"
-          :key="item.id"
-          @click="groupClick(item)">
+            :key="item.id"
+            @click="groupClick(item)">
           <div class="ul-li_img">
             <img :src="item.roomImg"
-              alt="">
+                 alt="">
           </div>
           <div class="ul-li_text">
             <div class="text-name">{{item.roomName}}</div>
@@ -21,19 +21,19 @@
         </li>
       </ul>
       <div v-if="!group.length"
-        class="friend-list_null">
+           class="friend-list_null">
         没有该群号，快去看看吧
       </div>
     </Scroll>
     <van-popup v-model="show"
-      position="right"
-      :overlay="false">
+               position="right"
+               :overlay="false">
       <div class="room-list_popup">
         <van-nav-bar :title="groupData.roomName"
-          @click-left="groupBack">
+                     @click-left="groupBack">
           <van-icon class="layout-return"
-            name="arrow-left"
-            slot="left" />
+                    name="arrow-left"
+                    slot="left" />
         </van-nav-bar>
         <div class="list-poput_box">
           <div class="ul-li_img list-poput_img">
@@ -54,8 +54,8 @@
         </div>
         <div class="list-poput_btn">
           <van-button size='large'
-            type="primary"
-            @click="addGroup">添加群聊</van-button>
+                      type="primary"
+                      @click="addGroup">添加群聊</van-button>
         </div>
       </div>
     </van-popup>
@@ -63,138 +63,138 @@
 </template>
 
 <script>
-import Scroll from '@/components/scroll.vue'
-import { mapGetters, mapActions } from 'vuex'
-import { touchDoms } from '@/utils/utils.js'
-export default {
-  data () {
-    return {
-      groupList: [],
-      show: false,
-      groupData: {}
-    }
-  },
-  created () {
-    if (!this.group.length) {
-      this.$router.back()
-    }
-  },
-  methods: {
-    groupClick (item) {
-      this.show = true
-      item.createDate = new Date(item.createDate).toLocaleString()
-      this.groupData = item
-    },
-    groupBack () {
-      this.show = false
-    },
-    addGroup () {
-      let data = {
-        friendGroupName: this.groupData.roomName,
-        friendGroupId: this.groupData.id,
-        friendGroupImg: this.groupData.roomImg,
-        signature: this.groupData.signature,
-        addAccountName: this.user.userName,
-        addAccountId: this.user.userId
+  import Scroll from '@/components/scroll.vue'
+  import { mapGetters, mapActions } from 'vuex'
+  import { touchDoms } from '@/utils/utils.js'
+  export default {
+    data () {
+      return {
+        groupList: [],
+        show: false,
+        groupData: {}
       }
-      this.joinRoom(data).then(data => {
-        let jude = {
-          'add': () => {
-            this.$toast({
-              position: 'top',
-              message: '添加成功'
-            })
-          },
-          'exist': () => {
-            this.$toast({
-              position: 'top',
-              message: '你已经加入这个群聊啦'
-            })
-          }
+    },
+    created () {
+      if (!this.group.length) {
+        this.$router.back()
+      }
+    },
+    methods: {
+      groupClick (item) {
+        this.show = true
+        item.createDate = new Date(item.createDate).toLocaleString()
+        this.groupData = item
+      },
+      groupBack () {
+        this.show = false
+      },
+      addGroup () {
+        let data = {
+          friendGroupName: this.groupData.roomName,
+          friendGroupId: this.groupData.id,
+          friendGroupImg: this.groupData.roomImg,
+          signature: this.groupData.signature,
+          addAccountName: this.user.userName,
+          addAccountId: this.user.userId
         }
-        jude[data.data.type]()
-      })
+        this.joinRoom(data).then(data => {
+          let jude = {
+            'add': () => {
+              this.$toast({
+                position: 'top',
+                message: '添加成功'
+              })
+            },
+            'exist': () => {
+              this.$toast({
+                position: 'top',
+                message: '你已经加入这个群聊啦'
+              })
+            }
+          }
+          jude[data.data.type]()
+        })
+      },
+      touchDom (dom, type) {
+        touchDoms(dom, type)
+      },
+      ...mapActions([
+        'joinRoom'
+      ])
     },
-    touchDom (dom, type) {
-      touchDoms(dom, type)
+    computed: {
+      ...mapGetters([
+        'group',
+        'user'
+      ])
     },
-    ...mapActions([
-      'joinRoom'
-    ])
-  },
-  computed: {
-    ...mapGetters([
-      'group',
-      'user'
-    ])
-  },
-  components: {
-    Scroll
+    components: {
+      Scroll
+    }
   }
-}
 </script>
 
 <style lang='less' scoped>
-.van-popup--right,
-.oom-list_popup {
-  width: 100%;
-  height: 100%;
-}
-.list-poput_box {
-  justify-content: center;
-}
-.list-poput_item {
-  padding: 0 0.3rem;
-  line-height: 0.5rem;
-  font-size: 0.15rem;
-}
-.list-poput_btn {
-  padding: 0 0.3rem;
-  margin-top: 0.3rem;
-}
-.group-list_ul {
-  position: relative;
-  li {
-    height: 0.5rem;
-    padding: 0.1rem 0.15rem;
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-box-align: center;
-    -ms-flex-align: center;
-    align-items: center;
-    position: relative;
-    overflow: hidden;
-    background-color: #fff;
-    border-bottom: 1px solid #ddd;
-  }
-}
-.ul-li_img {
-  width: 0.4rem;
-  height: 0.4rem;
-  border-radius: 50%;
-  margin-right: 0.15rem;
-  overflow: hidden;
-  img {
+  .van-popup--right,
+  .oom-list_popup {
     width: 100%;
     height: 100%;
   }
-}
-.list-poput_img {
-  width: 0.6rem;
-  height: 0.6rem;
-  margin: 0 auto;
-  margin-top: 0.25rem;
-  margin-bottom: 0.1rem;
-}
-.ul-li_text {
-  line-height: 0.25rem;
-  flex: 1;
-}
-.text-name {
-  font-weight: bold;
-}
-.friend-list_null {
-  text-align: center;
-}
+  .list-poput_box {
+    justify-content: center;
+  }
+  .list-poput_item {
+    padding: 0 0.3rem;
+    line-height: 0.5rem;
+    font-size: 0.15rem;
+  }
+  .list-poput_btn {
+    padding: 0 0.3rem;
+    margin-top: 0.3rem;
+  }
+  .group-list_ul {
+    position: relative;
+    li {
+      height: 0.5rem;
+      padding: 0.1rem 0.15rem;
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-box-align: center;
+      -ms-flex-align: center;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+      background-color: #fff;
+      border-bottom: 1px solid #ddd;
+    }
+  }
+  .ul-li_img {
+    width: 0.4rem;
+    height: 0.4rem;
+    border-radius: 50%;
+    margin-right: 0.15rem;
+    overflow: hidden;
+    img {
+      width: 100%;
+      height: 100%;
+    }
+  }
+  .list-poput_img {
+    width: 0.6rem;
+    height: 0.6rem;
+    margin: 0 auto;
+    margin-top: 0.25rem;
+    margin-bottom: 0.1rem;
+  }
+  .ul-li_text {
+    line-height: 0.25rem;
+    flex: 1;
+  }
+  .text-name {
+    font-weight: bold;
+  }
+  .friend-list_null {
+    text-align: center;
+  }
 </style>
